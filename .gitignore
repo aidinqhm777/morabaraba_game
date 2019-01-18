@@ -1,1 +1,17 @@
 build/
+build.xml
+manifest.mf
+dist/DoozGameOrginal.jar
+dist/README.TXT
+dist/
+dist/lib/AbsoluteLayout.jar
+dist/lib/beansbinding-1.2.1.jar
+dist/lib/miglayout-core.jar
+dist/lib/miglayout-swing.jar
+nbproject/build-impl.xml
+nbproject/genfiles.properties
+nbproject/project.properties
+nbproject/project.xml
+nbproject/private/private.properties
+nbproject/private/private.xml
+nbproject/
