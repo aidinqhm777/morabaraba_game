@@ -34,17 +34,25 @@ public class board extends javax.swing.JFrame {
     private void ai_Action(){
 
         if(aiActive){
-            int nextPosition = game.nextPosition();
-            String nextState = game.nextState();
+            String nextState = game.nextState(blueCanRemove);
             
-            if("add".equals(nextState)){
-                mouseClicked(nextPosition);
-            }else if("move".equals(nextState)){
-                
-            }else if ("remove".equals(nextPosition)){
-                
-            }else{
-                System.err.println("error in ai");
+            switch (nextState) {
+                case "add":{
+                        int nextPosition = game.nextPosition_addRemove();
+                        mouseClicked(nextPosition);
+                        break;
+                    }
+                case "move":{
+                        int[] nextPosition = game.nextPosition_move();
+                        break;
+                    }
+                case "remove":{
+                        int nextPosition = game.nextPosition_addRemove();
+                        break;
+                    }
+                default:
+                    System.err.println("error in ai");
+                    break;
             }
         }
     }
@@ -227,9 +235,10 @@ public class board extends javax.swing.JFrame {
                     playMusic();
                     cleanDots();
                     if(game.isBlueWinInNextMove(position)){
-//                        System.out.println("blue can take a red stone");
+//                      System.out.println("blue can take a red stone");
                         ShowText("blue can take a red stone", true);
                         blueCanRemove = true;
+                        ai_Action();
                     }else{
                         ShowText("Wait for Red to move", false);
                     }
@@ -244,6 +253,7 @@ public class board extends javax.swing.JFrame {
                     setStoneVisible(position,false , true);
                     playMusic();
                     cleanDots();
+                    System.out.println(position);
                     if(game.isRedWinInNextMove(position)){
 //                      System.out.println("red can take a blue stone");
                         ShowText("Red can take a blue stone", false);
@@ -324,9 +334,10 @@ public class board extends javax.swing.JFrame {
                 System.out.println("blue can take a red stone");
                 blueCanRemove = true;
                 ShowText("blue can take a red stone", true);
+                ai_Action();
             }else{
                 if(game.isBlueCanMove()){
-                    ShowText("Blue can Move", true);
+                    ShowText("Red can Move", false);
                 }else{
                     ShowText("Red Can Add Stone", false);
                 }
@@ -343,7 +354,7 @@ public class board extends javax.swing.JFrame {
                 ShowText("red can take a blue stone", false);
             }else{
                 if(game.isRedCanMove()){
-                    ShowText("Red can move", false);
+                    ShowText("blue can move", true);
                 }else{
                     ShowText("Blue Can Add Stone", true);
                 }

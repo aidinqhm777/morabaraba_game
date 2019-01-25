@@ -14,6 +14,7 @@ public class Game {
     private int blueStoneCount;
     private int redStonePackCount;
     private int redStoneCount;
+    private String nextState;
 
     
 
@@ -89,12 +90,41 @@ public class Game {
         if(Position == 24){return   returnLinkedList(21,15,23);}
         return empty;
     }
-    public int nextPosition(){
-        return 3;
+    
+    public int nextPosition_addRemove(){
+        
+        //return next positon of add stone or Remove it
+        
+        if(nextState == "add"){
+            
+            return 3;
+        }else{
+            
+            return 3;
+        }
+        
     }
-    public String nextState(){
-        return "add";
+    
+    public int[] nextPosition_move(){
+        //return next positon of move stone
+        int[] next = {1,2};
+        return next;
     }
+    
+    public String nextState(boolean blueCanRemove){
+        //return the state
+
+        if(blueCanRemove){
+            nextState = "remove";
+        }else if(1 == 1){
+            
+        }else{
+            
+        }
+        
+        return nextState;
+    }
+    
     public boolean isDraw(){
         return  redStoneCount ==12 && blueStoneCount ==12  && redStonePackCount ==0 && blueStonePackCount == 0;
     }
