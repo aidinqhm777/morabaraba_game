@@ -2,8 +2,6 @@ package control;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Vector;
-import javax.swing.text.Position;
 
 public class Game {
 
@@ -50,9 +48,9 @@ public class Game {
     }
 
     //methods
-    public LinkedList emptySpot(int Position){
+    public LinkedList<Integer> returnEmptySpots(int Position){
         LinkedList <Integer> empty = new LinkedList<>();
-        LinkedList <Integer> connected = Connected(Position);
+        LinkedList <Integer> connected = returnConnectedSpotd(Position);
         
         for (int i =0; i< connected.size(); i++) {
             if(isGameBordEmpty(connected.get(i))){
@@ -62,7 +60,7 @@ public class Game {
         
         return empty;
     }
-    public LinkedList Connected (int Position){
+    public LinkedList<Integer> returnConnectedSpotd (int Position){
         LinkedList <Integer> empty = new LinkedList<>();
  
         if(Position == 1){return returnLinkedList(2,4,10);}
@@ -211,14 +209,14 @@ public class Game {
         if(next == 24){return isRowCompleteForBlue(21,18,15,3,23,22);}
         else return false;
     }
-    private LinkedList returnLinkedList (int n1,int n2,int n3){
+    private LinkedList<Integer> returnLinkedList (int n1,int n2,int n3){
         LinkedList <Integer> Ll = new LinkedList<>();
         Ll.add(n1);
         Ll.add(n2);
         Ll.add(n3);
         return Ll;
     }
-    private LinkedList returnLinkedList (int n1,int n2,int n3,int n4){
+    private LinkedList<Integer> returnLinkedList (int n1,int n2,int n3,int n4){
         LinkedList <Integer> Ll = new LinkedList<>();
         Ll.add(n1);
         Ll.add(n2);

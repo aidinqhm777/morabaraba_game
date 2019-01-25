@@ -245,22 +245,32 @@ public class board extends javax.swing.JFrame {
         if(!Moved) System.out.println("Wrong entry");
         isWaitForMove = false;
     }
-    private void Move(int position, int position1,int position2 ,int position3){
-        int[] positionArr = {position1, position2, position3};
-        _move(3, position, positionArr);
+    private void Move(int position){
+        int[] positionArr;
+        if(game.returnConnectedSpotd(position).size() ==3){    
+            positionArr = new int[3];
+            positionArr[0] = game.returnConnectedSpotd(position).get(0);
+            positionArr[1] = game.returnConnectedSpotd(position).get(1);
+            positionArr[2] = game.returnConnectedSpotd(position).get(2);
+            _move(3, position, positionArr);
+        }else{
+            positionArr = new int[4];
+            positionArr[0] = game.returnConnectedSpotd(position).get(0);
+            positionArr[1] = game.returnConnectedSpotd(position).get(1);
+            positionArr[2] = game.returnConnectedSpotd(position).get(2);
+            positionArr[3] = game.returnConnectedSpotd(position).get(3);
+            _move(4, position, positionArr);
+        }
+        
     }    
-    private void Move(int position, int position1,int position2 ,int position3, int position4){
-        int[] positionArr = {position1, position2, position3, position4};
-        _move(4, position, positionArr);
-    }
     private void waitForMove(int position){
         if(game.isBlueCanMove() && isStoneVisible(position, true) && game.isBlueTurn()){
-            LinkedList<Integer> empty = game.emptySpot(position);
+            LinkedList<Integer> empty = game.returnEmptySpots(position);
             
             cleanDots();
             setDotVisible(position,false,true);
-            for(int i =0; i<game.emptySpot(position).size(); i++){
-                setDotVisible((int)game.emptySpot(position).get(i) ,true,true);
+            for(int i =0; i<game.returnEmptySpots(position).size(); i++){
+                setDotVisible((int)game.returnEmptySpots(position).get(i) ,true,true);
             }
             
             isWaitForMove = true;
@@ -273,8 +283,8 @@ public class board extends javax.swing.JFrame {
             
             cleanDots();
             setDotVisible(position,false,true);
-            for(int i =0; i<game.emptySpot(position).size(); i++){
-                setDotVisible((int)game.emptySpot(position).get(i) ,true,true);
+            for(int i =0; i<game.returnEmptySpots(position).size(); i++){
+                setDotVisible((int)game.returnEmptySpots(position).get(i) ,true,true);
             }
             
             isWaitForMove = true;
@@ -375,19 +385,11 @@ public class board extends javax.swing.JFrame {
         }
         
     }
-    private void mouseClicked(int position,int position1 ,int position2 ,int position3){
+    private void mouseClicked(int position){
         if(isEnd()) return;
         
         if(isWaitForMove){
-            Move(position,position1,position2,position3);
-        }
-        else _mouseClicked(position);
-    }
-    private void mouseClicked(int position,int position1 ,int position2 ,int position3, int position4){
-        if(isEnd()) return;
-        
-        if(isWaitForMove){
-            Move(position,position1,position2,position3, position4);
+            Move(position);
         }
         else _mouseClicked(position);
     }
@@ -418,6 +420,30 @@ public class board extends javax.swing.JFrame {
 
         BlueText = new javax.swing.JLabel();
         RedText = new javax.swing.JLabel();
+        position1 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position2 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position3 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position4 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position5 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position6 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position7 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position8 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position9 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position10 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position11 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position12 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position13 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position14 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position15 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position16 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position17 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position18 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position19 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position20 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position21 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position22 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position23 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
+        position24 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
         highlighter1 = new javax.swing.JLabel();
         highlighter2 = new javax.swing.JLabel();
         highlighter3 = new javax.swing.JLabel();
@@ -466,30 +492,6 @@ public class board extends javax.swing.JFrame {
         highlighter46 = new javax.swing.JLabel();
         highlighter47 = new javax.swing.JLabel();
         highlighter48 = new javax.swing.JLabel();
-        position1 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position2 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position3 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position4 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position5 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position6 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position7 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position8 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position9 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position10 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position11 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position12 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position13 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position14 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position15 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position16 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position17 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position18 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position19 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position20 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position21 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position22 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position23 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
-        position24 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
         redStone1 = new javax.swing.JLabel();
         redStone2 = new javax.swing.JLabel();
         redStone3 = new javax.swing.JLabel();
@@ -583,198 +585,6 @@ public class board extends javax.swing.JFrame {
         RedText.setText("Red Can move");
         getContentPane().add(RedText);
         RedText.setBounds(930, 880, 450, 30);
-
-        highlighter1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter1);
-        highlighter1.setBounds(438, 73, 20, 20);
-
-        highlighter2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter2);
-        highlighter2.setBounds(690, 73, 20, 20);
-
-        highlighter3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter3);
-        highlighter3.setBounds(942, 73, 20, 20);
-
-        highlighter4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter4);
-        highlighter4.setBounds(511, 145, 20, 20);
-
-        highlighter5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter5);
-        highlighter5.setBounds(690, 145, 20, 20);
-
-        highlighter6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter6);
-        highlighter6.setBounds(873, 145, 20, 20);
-
-        highlighter7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter7);
-        highlighter7.setBounds(584, 218, 20, 20);
-
-        highlighter8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter8);
-        highlighter8.setBounds(690, 218, 20, 20);
-
-        highlighter9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter9);
-        highlighter9.setBounds(800, 218, 20, 20);
-
-        highlighter11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter11);
-        highlighter11.setBounds(511, 460, 20, 20);
-
-        highlighter10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter10);
-        highlighter10.setBounds(438, 460, 20, 20);
-
-        highlighter12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter12);
-        highlighter12.setBounds(584, 460, 20, 20);
-
-        highlighter13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter13);
-        highlighter13.setBounds(800, 464, 20, 20);
-
-        highlighter14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter14);
-        highlighter14.setBounds(873, 464, 20, 20);
-
-        highlighter15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter15);
-        highlighter15.setBounds(945, 464, 20, 20);
-
-        highlighter16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter16);
-        highlighter16.setBounds(584, 685, 20, 20);
-
-        highlighter17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter17);
-        highlighter17.setBounds(690, 685, 20, 20);
-
-        highlighter18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter18);
-        highlighter18.setBounds(800, 685, 20, 20);
-
-        highlighter19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter19);
-        highlighter19.setBounds(511, 763, 20, 20);
-
-        highlighter20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter20);
-        highlighter20.setBounds(690, 763, 20, 20);
-
-        highlighter21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter21);
-        highlighter21.setBounds(873, 763, 20, 20);
-
-        highlighter22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter22);
-        highlighter22.setBounds(438, 840, 20, 20);
-
-        highlighter23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter23);
-        highlighter23.setBounds(690, 840, 20, 20);
-
-        highlighter24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
-        getContentPane().add(highlighter24);
-        highlighter24.setBounds(942, 840, 20, 20);
-
-        highlighter25.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter25);
-        highlighter25.setBounds(438, 73, 20, 20);
-
-        highlighter26.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter26);
-        highlighter26.setBounds(690, 73, 20, 20);
-
-        highlighter27.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter27);
-        highlighter27.setBounds(942, 73, 20, 20);
-
-        highlighter28.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter28);
-        highlighter28.setBounds(511, 145, 20, 20);
-
-        highlighter29.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter29);
-        highlighter29.setBounds(690, 145, 20, 20);
-
-        highlighter30.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter30);
-        highlighter30.setBounds(873, 145, 20, 20);
-
-        highlighter31.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter31);
-        highlighter31.setBounds(584, 218, 20, 20);
-
-        highlighter32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter32);
-        highlighter32.setBounds(690, 218, 20, 20);
-
-        highlighter33.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter33);
-        highlighter33.setBounds(800, 218, 20, 20);
-
-        highlighter34.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter34);
-        highlighter34.setBounds(511, 460, 20, 20);
-
-        highlighter35.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter35);
-        highlighter35.setBounds(438, 460, 20, 20);
-
-        highlighter36.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter36);
-        highlighter36.setBounds(584, 460, 20, 20);
-
-        highlighter37.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter37);
-        highlighter37.setBounds(800, 464, 20, 20);
-
-        highlighter38.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter38);
-        highlighter38.setBounds(873, 464, 20, 20);
-
-        highlighter39.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter39);
-        highlighter39.setBounds(945, 464, 20, 20);
-
-        highlighter40.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter40);
-        highlighter40.setBounds(584, 685, 20, 20);
-
-        highlighter41.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter41);
-        highlighter41.setBounds(690, 685, 20, 20);
-
-        highlighter42.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter42);
-        highlighter42.setBounds(800, 685, 20, 20);
-
-        highlighter43.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter43);
-        highlighter43.setBounds(511, 763, 20, 20);
-
-        highlighter44.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter44);
-        highlighter44.setBounds(690, 763, 20, 20);
-
-        highlighter45.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter45);
-        highlighter45.setBounds(873, 763, 20, 20);
-
-        highlighter46.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter46);
-        highlighter46.setBounds(438, 840, 20, 20);
-
-        highlighter47.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter47);
-        highlighter47.setBounds(690, 840, 20, 20);
-
-        highlighter48.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
-        getContentPane().add(highlighter48);
-        highlighter48.setBounds(942, 840, 20, 20);
 
         position1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         position1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -991,6 +801,198 @@ public class board extends javax.swing.JFrame {
         });
         getContentPane().add(position24);
         position24.setBounds(920, 825, 50, 50);
+
+        highlighter1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter1);
+        highlighter1.setBounds(438, 73, 20, 20);
+
+        highlighter2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter2);
+        highlighter2.setBounds(690, 73, 20, 20);
+
+        highlighter3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter3);
+        highlighter3.setBounds(942, 73, 20, 20);
+
+        highlighter4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter4);
+        highlighter4.setBounds(511, 145, 20, 20);
+
+        highlighter5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter5);
+        highlighter5.setBounds(690, 145, 20, 20);
+
+        highlighter6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter6);
+        highlighter6.setBounds(873, 145, 20, 20);
+
+        highlighter7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter7);
+        highlighter7.setBounds(584, 218, 20, 20);
+
+        highlighter8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter8);
+        highlighter8.setBounds(690, 218, 20, 20);
+
+        highlighter9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter9);
+        highlighter9.setBounds(800, 218, 20, 20);
+
+        highlighter11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter11);
+        highlighter11.setBounds(511, 460, 20, 20);
+
+        highlighter10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter10);
+        highlighter10.setBounds(438, 460, 20, 20);
+
+        highlighter12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter12);
+        highlighter12.setBounds(584, 460, 20, 20);
+
+        highlighter13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter13);
+        highlighter13.setBounds(800, 464, 20, 20);
+
+        highlighter14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter14);
+        highlighter14.setBounds(873, 464, 20, 20);
+
+        highlighter15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter15);
+        highlighter15.setBounds(945, 464, 20, 20);
+
+        highlighter16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter16);
+        highlighter16.setBounds(584, 685, 20, 20);
+
+        highlighter17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter17);
+        highlighter17.setBounds(690, 685, 20, 20);
+
+        highlighter18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter18);
+        highlighter18.setBounds(800, 685, 20, 20);
+
+        highlighter19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter19);
+        highlighter19.setBounds(511, 763, 20, 20);
+
+        highlighter20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter20);
+        highlighter20.setBounds(690, 763, 20, 20);
+
+        highlighter21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter21);
+        highlighter21.setBounds(873, 763, 20, 20);
+
+        highlighter22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter22);
+        highlighter22.setBounds(438, 840, 20, 20);
+
+        highlighter23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter23);
+        highlighter23.setBounds(690, 840, 20, 20);
+
+        highlighter24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter.png"))); // NOI18N
+        getContentPane().add(highlighter24);
+        highlighter24.setBounds(942, 840, 20, 20);
+
+        highlighter25.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter25);
+        highlighter25.setBounds(438, 73, 20, 20);
+
+        highlighter26.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter26);
+        highlighter26.setBounds(690, 73, 20, 20);
+
+        highlighter27.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter27);
+        highlighter27.setBounds(942, 73, 20, 20);
+
+        highlighter28.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter28);
+        highlighter28.setBounds(511, 145, 20, 20);
+
+        highlighter29.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter29);
+        highlighter29.setBounds(690, 145, 20, 20);
+
+        highlighter30.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter30);
+        highlighter30.setBounds(873, 145, 20, 20);
+
+        highlighter31.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter31);
+        highlighter31.setBounds(584, 218, 20, 20);
+
+        highlighter32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter32);
+        highlighter32.setBounds(690, 218, 20, 20);
+
+        highlighter33.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter33);
+        highlighter33.setBounds(800, 218, 20, 20);
+
+        highlighter34.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter34);
+        highlighter34.setBounds(511, 460, 20, 20);
+
+        highlighter35.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter35);
+        highlighter35.setBounds(438, 460, 20, 20);
+
+        highlighter36.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter36);
+        highlighter36.setBounds(584, 460, 20, 20);
+
+        highlighter37.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter37);
+        highlighter37.setBounds(800, 464, 20, 20);
+
+        highlighter38.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter38);
+        highlighter38.setBounds(873, 464, 20, 20);
+
+        highlighter39.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter39);
+        highlighter39.setBounds(945, 464, 20, 20);
+
+        highlighter40.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter40);
+        highlighter40.setBounds(584, 685, 20, 20);
+
+        highlighter41.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter41);
+        highlighter41.setBounds(690, 685, 20, 20);
+
+        highlighter42.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter42);
+        highlighter42.setBounds(800, 685, 20, 20);
+
+        highlighter43.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter43);
+        highlighter43.setBounds(511, 763, 20, 20);
+
+        highlighter44.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter44);
+        highlighter44.setBounds(690, 763, 20, 20);
+
+        highlighter45.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter45);
+        highlighter45.setBounds(873, 763, 20, 20);
+
+        highlighter46.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter46);
+        highlighter46.setBounds(438, 840, 20, 20);
+
+        highlighter47.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter47);
+        highlighter47.setBounds(690, 840, 20, 20);
+
+        highlighter48.setIcon(new javax.swing.ImageIcon(getClass().getResource("/highlighter2.png"))); // NOI18N
+        getContentPane().add(highlighter48);
+        highlighter48.setBounds(942, 840, 20, 20);
 
         redStone1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/stone2.png"))); // NOI18N
         redStone1.setText("jLabel2");
@@ -1422,99 +1424,99 @@ public class board extends javax.swing.JFrame {
 
     
     private void position2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position2MouseClicked
-        mouseClicked(2,1,3,5);
+        mouseClicked(2);
     }//GEN-LAST:event_position2MouseClicked
 
     private void position3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position3MouseClicked
-       mouseClicked(3,2,6,15);
+       mouseClicked(3);
     }//GEN-LAST:event_position3MouseClicked
 
     private void position4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position4MouseClicked
-        mouseClicked(4,1,7,11,5);
+        mouseClicked(4);
     }//GEN-LAST:event_position4MouseClicked
 
     private void position5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position5MouseClicked
-        mouseClicked(5,2,8,4,6);
+        mouseClicked(5);
     }//GEN-LAST:event_position5MouseClicked
 
     private void position6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position6MouseClicked
-        mouseClicked(6,3,9,5,14);
+        mouseClicked(6);
     }//GEN-LAST:event_position6MouseClicked
 
     private void position7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position7MouseClicked
-       mouseClicked(7,4,8,12);
+       mouseClicked(7);
     }//GEN-LAST:event_position7MouseClicked
 
     private void position8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position8MouseClicked
-        mouseClicked(8,5,7,9);
+        mouseClicked(8);
     }//GEN-LAST:event_position8MouseClicked
 
     private void position9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position9MouseClicked
-       mouseClicked(9,8,6,18);
+       mouseClicked(9);
     }//GEN-LAST:event_position9MouseClicked
 
     private void position10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position10MouseClicked
-        mouseClicked(10,1,22,11);
+        mouseClicked(10);
     }//GEN-LAST:event_position10MouseClicked
 
     private void position11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position11MouseClicked
-       mouseClicked(11,10,12,4,19);
+       mouseClicked(11);
     }//GEN-LAST:event_position11MouseClicked
 
     private void position12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position12MouseClicked
-       mouseClicked(12,7,16,11);
+       mouseClicked(12);
     }//GEN-LAST:event_position12MouseClicked
 
     private void position13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position13MouseClicked
-        mouseClicked(13,9,18,14);
+        mouseClicked(13);
     }//GEN-LAST:event_position13MouseClicked
 
     private void position14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position14MouseClicked
-        mouseClicked(14,6,21,13,15);
+        mouseClicked(14);
     }//GEN-LAST:event_position14MouseClicked
 
     private void position15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position15MouseClicked
-        mouseClicked(15,3,24,14);
+        mouseClicked(15);
     }//GEN-LAST:event_position15MouseClicked
 
     private void position16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position16MouseClicked
-        mouseClicked(16,12,17,19);
+        mouseClicked(16);
     }//GEN-LAST:event_position16MouseClicked
 
     private void position17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position17MouseClicked
-        mouseClicked(17,20,16,18);
+        mouseClicked(17);
     }//GEN-LAST:event_position17MouseClicked
 
     private void position18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position18MouseClicked
-        mouseClicked(18,13,17,21);
+        mouseClicked(18);
     }//GEN-LAST:event_position18MouseClicked
 
     private void position19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position19MouseClicked
-        mouseClicked(19,11,20,22,16);
+        mouseClicked(19);
     }//GEN-LAST:event_position19MouseClicked
 
     private void position20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position20MouseClicked
-        mouseClicked(20,17,23,21,19);                                       
+        mouseClicked(20);                                       
     }//GEN-LAST:event_position20MouseClicked
 
     private void position21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position21MouseClicked
-        mouseClicked(21,18,24,20,14);
+        mouseClicked(21);
     }//GEN-LAST:event_position21MouseClicked
 
     private void position22MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position22MouseClicked
-        mouseClicked(22,19,10,23);
+        mouseClicked(22);
     }//GEN-LAST:event_position22MouseClicked
 
     private void position23MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position23MouseClicked
-        mouseClicked(23,20,22,24);
+        mouseClicked(23);
     }//GEN-LAST:event_position23MouseClicked
 
     private void position24MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position24MouseClicked
-        mouseClicked(24,21,15,23);
+        mouseClicked(24);
     }//GEN-LAST:event_position24MouseClicked
 
     private void position1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position1MouseClicked
-        mouseClicked(1,4,2,10);
+        mouseClicked(1);
     }//GEN-LAST:event_position1MouseClicked
 
     /**

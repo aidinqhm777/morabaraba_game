@@ -9,7 +9,7 @@ public class MoveSound extends Thread{
         try {
             Clip clip = AudioSystem.getClip();
             AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-            Main.class.getResourceAsStream(url));
+            Game.class.getResourceAsStream(url));
             clip.open(inputStream);
             clip.start(); 
         } catch (Exception e) {
