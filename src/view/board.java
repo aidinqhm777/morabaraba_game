@@ -17,6 +17,7 @@ public class board extends javax.swing.JFrame {
     private boolean isMoveWaitColorBlue;
     private boolean blueCanRemove = false;
     private boolean redCanRemove = false;
+    private boolean aiActive = false;
     
     Game game;
     MoveSound play;
@@ -27,6 +28,25 @@ public class board extends javax.swing.JFrame {
         RedText.setVisible(false);
         BlueText.setText("Blue Can Add Stone");
         cleanDots();
+    }
+    
+    
+    private void ai_Action(){
+
+        if(aiActive){
+            int nextPosition = game.nextPosition();
+            String nextState = game.nextState();
+            
+            if("add".equals(nextState)){
+                mouseClicked(nextPosition);
+            }else if("move".equals(nextState)){
+                
+            }else if ("remove".equals(nextPosition)){
+                
+            }else{
+                System.err.println("error in ai");
+            }
+        }
     }
     private void ShowText(String txt, boolean isBlue){
         if(isBlue){
@@ -192,15 +212,11 @@ public class board extends javax.swing.JFrame {
             return highlighter1;
         }
     }
-    private boolean isDotVisible(int Positin,boolean isWhite){
-        return returnDot(Positin, isWhite).isVisible();
-    }
     private void setDotVisible(int Positin,boolean isWhite, boolean flag){
         returnDot(Positin, isWhite).setVisible(flag);
     }
     private void _move(int n, int position, int[] positionArr){
         boolean Moved = false;
-        
         for(int i=0; i<n; i++){
             
             if(isMoveWaitColorBlue && game.isBlueTurn()){
@@ -235,6 +251,8 @@ public class board extends javax.swing.JFrame {
                     }else{
                         ShowText("wait for blue to move", true);
                     }
+                    
+                    ai_Action();
                     Moved = true;
                     break;
                 }
@@ -296,7 +314,7 @@ public class board extends javax.swing.JFrame {
     }
     private void addStone(int position){
         if(game.isBlueTurn() && !game.isBlueCanMove() && game.canAddStone(1)){
-            
+
             game.addBluePiece(position);
             setStoneVisible(position, true, true);
             blueStonePackClean();
@@ -315,10 +333,10 @@ public class board extends javax.swing.JFrame {
             }
             
         }else if(!game.isBlueTurn() && !game.isRedCanMove() && game.canAddStone(0)){
+            
             game.addRedPiece(position);
             setStoneVisible(position, false, true);
             redStonePackClean();
-            
             if(game.isRedWinInNextMove(position)){
                 System.out.println("red can take a red sotone");
                 redCanRemove = true;
@@ -332,13 +350,23 @@ public class board extends javax.swing.JFrame {
             }
             
             playMusic();
-            
+            ai_Action();
         }
     }
-    private void _mouseClicked(int position){
-
-        if(blueCanRemove){
-            if(returnStone(position, false).isVisible()){
+    private void redRemove(int position){
+        if(returnStone(position, true).isVisible()){    
+                game.removeBluePiece(position);
+                setStoneVisible(position, true, false);
+                redCanRemove= false;
+                ai_Action();
+                if(game.isBlueCanMove())  ShowText("Blue Can move", true);
+                else                      ShowText("Blue can add", true);
+            }else{
+                System.out.println("Wronge entry");
+            }
+    }
+    private void blueRemove(int position){
+        if(returnStone(position, false).isVisible()){
                 game.removeRedPiece(position);
                 setStoneVisible(position, false, false);
                 blueCanRemove = false;
@@ -348,28 +376,26 @@ public class board extends javax.swing.JFrame {
                 System.out.println("Wronge entry");
             }
             
+    }
+    private void DrawText(){
+        System.out.println("Draw");
+        RedText.setVisible(true);
+        BlueText.setVisible(true);
+        RedText.setText("Draw");
+        BlueText.setText("Draw");
+    }
+    private void _mouseClicked(int position){
+
+        if(blueCanRemove){
+            blueRemove(position);
         }
         else if(redCanRemove){
-            if(returnStone(position, true).isVisible()){    
-                game.removeBluePiece(position);
-                setStoneVisible(position, true, false);
-                redCanRemove= false;
-                if(game.isBlueCanMove())  ShowText("Blue Can move", true);
-                else                      ShowText("Blue can add", true);
-            }else{
-                System.out.println("Wronge entry");
-            }
-            
+            redRemove(position);
         }
-        
         else if(game.isGameBordEmpty(position)){
             addStone(position);
             if(game.isDraw()){
-                System.out.println("Draw");
-                RedText.setVisible(true);
-                BlueText.setVisible(true);
-                RedText.setText("Draw");
-                BlueText.setText("Draw");
+                DrawText();
             }
         }
         else if(!game.isGameBordEmpty(position)){
@@ -412,7 +438,9 @@ public class board extends javax.swing.JFrame {
         }
         else return false;
     }
-    
+    /*private boolean isDotVisible(int Positin,boolean isWhite){
+        return returnDot(Positin, isWhite).isVisible();
+    }*/
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

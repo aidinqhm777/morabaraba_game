@@ -89,6 +89,12 @@ public class Game {
         if(Position == 24){return   returnLinkedList(21,15,23);}
         return empty;
     }
+    public int nextPosition(){
+        return 3;
+    }
+    public String nextState(){
+        return "add";
+    }
     public boolean isDraw(){
         return  redStoneCount ==12 && blueStoneCount ==12  && redStonePackCount ==0 && blueStonePackCount == 0;
     }
