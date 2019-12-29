@@ -5,24 +5,23 @@ import java.util.LinkedList;
 
 public class Game {
 
-
-    private static final int BLUE = 1;
-    private static final int RED = 0;
-    private static final int EMPTY = -1;
-    private int[][] gameBord;
+    //blue is 1, red is 0, and empty is -1;
+    private int[][] GameBord = new int[8][3];
     private Game Parent;
     public ArrayList<Game> next = new ArrayList<>();
-    private boolean blueTurn = true;
+    private boolean BlueTurn;
     private int blueStonePackCount;
     private int blueStoneCount;
     private int redStonePackCount;
     private int redStoneCount;
+    private String nextState;
 
 
     //constructor
     public Game() {
-        gameBord = emptyGameBoard(new int[8][3]);
-        blueTurn = true;
+        GameBord = new int[8][3];
+        GameBord = emptyGameBoard(GameBord);
+        BlueTurn = true;
         blueStonePackCount = 12;
         blueStoneCount = 12;
         redStonePackCount = 12;
@@ -30,9 +29,9 @@ public class Game {
     }
 
     public Game(int[][] gameBord, Game parent) {
-        for (int i = 0; i < 8; i++) for (int j = 0; j < 3; j++) this.gameBord[i][j] = gameBord[i][j];
+        for (int i = 0; i < 8; i++) for (int j = 0; j < 3; j++) this.GameBord[i][j] = gameBord[i][j];
         this.Parent = parent;
-        blueTurn = !parent.blueTurn;
+        BlueTurn = !parent.BlueTurn;
         this.blueStonePackCount = parent.blueStonePackCount;
         this.redStonePackCount = parent.redStonePackCount;
     }
@@ -52,9 +51,9 @@ public class Game {
     }
 
     //methods
-    public LinkedList emptySpot(int Position) {
+    public LinkedList<Integer> returnEmptySpots(int Position) {
         LinkedList<Integer> empty = new LinkedList<>();
-        LinkedList<Integer> connected = Connected(Position);
+        LinkedList<Integer> connected = returnConnectedSpotd(Position);
 
         for (int i = 0; i < connected.size(); i++) {
             if (isGameBordEmpty(connected.get(i))) {
@@ -65,8 +64,9 @@ public class Game {
         return empty;
     }
 
-    public LinkedList Connected(int Position) {
+    public LinkedList<Integer> returnConnectedSpotd(int Position) {
         LinkedList<Integer> empty = new LinkedList<>();
+
 
         if (Position == 1) {
             return returnLinkedList(2, 4, 10);
@@ -143,13 +143,47 @@ public class Game {
         return empty;
     }
 
+    public int nextPosition_addRemove() {
+
+        //return next positon of add stone or Remove it
+
+        if (nextState == "add") {
+
+            return 3;
+        } else {
+
+            return 3;
+        }
+
+    }
+
+    public int[] nextPosition_move() {
+        //return next positon of move stone
+        int[] next = {1, 2};
+        return next;
+    }
+
+    public String nextState(boolean blueCanRemove) {
+        //return the state
+
+        if (blueCanRemove) {
+            nextState = "remove";
+        } else if (1 == 1) {
+
+        } else {
+
+        }
+
+        return nextState;
+    }
+
     public boolean isDraw() {
         return redStoneCount == 12 && blueStoneCount == 12 && redStonePackCount == 0 && blueStonePackCount == 0;
     }
 
-    public boolean canAddStone(int state) {
-        if (blueStonePackCount == 0 && state == BLUE) return false;
-        if (redStonePackCount == 0 && state == RED) return false;
+    public boolean canAddStone(int a) {
+        if (blueStonePackCount == 0 && a == 1) return false;
+        if (redStonePackCount == 0 && a == 0) return false;
         return true;
     }
 
@@ -170,33 +204,33 @@ public class Game {
     }
 
     public boolean isBlueTurn() {
-        return blueTurn;
+        return BlueTurn;
     }
 
     public void setBlueTurn(boolean isBlueTurn) {
-        this.blueTurn = isBlueTurn;
+        this.BlueTurn = isBlueTurn;
     }
 
     public void addBluePiece(int Position) {
         int i = positionToij(Position).i;
         int j = positionToij(Position).j;
-        gameBord[i][j] = BLUE;
-        blueTurn = false;
+        GameBord[i][j] = 1;
+        BlueTurn = false;
         blueStonePackCount--;
     }
 
     public void addRedPiece(int Position) {
         int i = positionToij(Position).i;
         int j = positionToij(Position).j;
-        gameBord[i][j] = RED;
-        blueTurn = true;
+        GameBord[i][j] = 0;
+        BlueTurn = true;
         redStonePackCount--;
     }
 
     private void removePiece(int Position) {
         int i = positionToij(Position).i;
         int j = positionToij(Position).j;
-        gameBord[i][j] = EMPTY;
+        GameBord[i][j] = -1;
         System.out.println(i + " " + j + "cleand ");
     }
 
@@ -211,25 +245,25 @@ public class Game {
     }
 
     public void moveBluePiece(int BluePosition, int emptyPosition) {
-        gameBord[positionToij(emptyPosition).i][positionToij(emptyPosition).j] = 1;
-        gameBord[positionToij(BluePosition).i][positionToij(BluePosition).j] = -1;
-        blueTurn = !blueTurn;
+        GameBord[positionToij(emptyPosition).i][positionToij(emptyPosition).j] = 1;
+        GameBord[positionToij(BluePosition).i][positionToij(BluePosition).j] = -1;
+        BlueTurn = !BlueTurn;
     }
 
     public void moveRedPiece(int RedPosition, int emptyPosition) {
-        gameBord[positionToij(emptyPosition).i][positionToij(emptyPosition).j] = 1;
-        gameBord[positionToij(RedPosition).i][positionToij(RedPosition).j] = -1;
-        blueTurn = !blueTurn;
+        GameBord[positionToij(emptyPosition).i][positionToij(emptyPosition).j] = 1;
+        GameBord[positionToij(RedPosition).i][positionToij(RedPosition).j] = -1;
+        BlueTurn = !BlueTurn;
     }
 
     public static void findNextMode(Game game) {
-        Game temp = new Game(game.gameBord, game);
-        if (game.blueTurn) {
+        Game temp = new Game(game.GameBord, game);
+        if (game.BlueTurn) {
             for (int i = 1; i <= 24; i++) {
                 if (game.isGameBordEmpty(i)) {
                     temp.addBluePiece(i);
                     game.next.add(temp);
-                    temp = new Game(game.gameBord, game);
+                    temp = new Game(game.GameBord, game);
                 }
             }
         } else {
@@ -237,7 +271,7 @@ public class Game {
                 if (game.isGameBordEmpty(i)) {
                     temp.addRedPiece(i);
                     game.next.add(temp);
-                    temp = new Game(game.gameBord, game);
+                    temp = new Game(game.GameBord, game);
                 }
             }
         }
@@ -328,7 +362,7 @@ public class Game {
         } else return false;
     }
 
-    private LinkedList returnLinkedList(int n1, int n2, int n3) {
+    private LinkedList<Integer> returnLinkedList(int n1, int n2, int n3) {
         LinkedList<Integer> Ll = new LinkedList<>();
         Ll.add(n1);
         Ll.add(n2);
@@ -336,7 +370,7 @@ public class Game {
         return Ll;
     }
 
-    private LinkedList returnLinkedList(int n1, int n2, int n3, int n4) {
+    private LinkedList<Integer> returnLinkedList(int n1, int n2, int n3, int n4) {
         LinkedList<Integer> Ll = new LinkedList<>();
         Ll.add(n1);
         Ll.add(n2);
@@ -440,19 +474,19 @@ public class Game {
     private boolean isGameBordBlue(int position) {
         int i = positionToij(position).i;
         int j = positionToij(position).j;
-        return gameBord[i][j] == BLUE;
+        return GameBord[i][j] == 1;
     }
 
     private boolean isGameBordRed(int position) {
         int i = positionToij(position).i;
         int j = positionToij(position).j;
-        return gameBord[i][j] == RED;
+        return GameBord[i][j] == 0;
     }
 
     public boolean isGameBordEmpty(int position) {
         int i = positionToij(position).i;
         int j = positionToij(position).j;
-        return gameBord[i][j] == EMPTY;
+        return GameBord[i][j] == -1;
     }
 
     private Pair positionToij(int position) {
@@ -631,11 +665,11 @@ public class Game {
         return 0;
     }
 
-    private int[][] emptyGameBoard(int[][] gameBord) {
-        for (int i = 0; i < gameBord.length; i++)
-            for (int j = 0; j < gameBord[0].length; j++)
-                gameBord[i][j] = EMPTY;
-        return gameBord;
+    private int[][] emptyGameBoard(int[][] a) {
+        for (int i = 0; i < a.length; i++)
+            for (int j = 0; j < a[0].length; j++)
+                a[i][j] = -1;
+        return a;
     }
 }
 
