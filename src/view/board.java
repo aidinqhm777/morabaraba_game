@@ -7,19 +7,21 @@ package view;
 
 import control.Game;
 import control.MoveSound;
+
 import java.util.LinkedList;
 
 
 public class board extends javax.swing.JFrame {
-    
+
     private boolean isWaitForMove = false;
-    private int     moveWaitPosition;
+    private int moveWaitPosition;
     private boolean isMoveWaitColorBlue;
     private boolean blueCanRemove = false;
     private boolean redCanRemove = false;
-    
+
     Game game;
     MoveSound play;
+
     public board() {
         game = new Game();
         play = new MoveSound();
@@ -28,255 +30,271 @@ public class board extends javax.swing.JFrame {
         BlueText.setText("Blue Can Add Stone");
         cleanDots();
     }
-    private void ShowText(String txt, boolean isBlue){
-        if(isBlue){
+
+    private void ShowText(String txt, boolean isBlue) {
+        if (isBlue) {
             RedText.setVisible(false);
             BlueText.setVisible(true);
             BlueText.setText(txt);
-        }else{
+        } else {
             BlueText.setVisible(false);
             RedText.setVisible(true);
             RedText.setText(txt);
         }
     }
-    private void cleanDots(){
-        for(int i=1; i<=24; i++){setDotVisible(i, true, false); setDotVisible(i, false, false);}
+
+    private void cleanDots() {
+        for (int i = 1; i <= 24; i++) {
+            setDotVisible(i, true, false);
+            setDotVisible(i, false, false);
+        }
     }
-    private void playMusic(){
+
+    private void playMusic() {
         play = null;
         play = new MoveSound();
         play.start();
     }
-    private void blueStonePackClean(){
-        
-        if(blueStonePack12.isVisible()) blueStonePack12.setVisible(false);
-        else if(blueStonePack11.isVisible()) blueStonePack11.setVisible(false);
-        else if(blueStonePack10.isVisible()) blueStonePack10.setVisible(false);
-        else if(blueStonePack9.isVisible()) blueStonePack9.setVisible(false);
-        else if(blueStonePack8.isVisible()) blueStonePack8.setVisible(false);     
-        else if(blueStonePack7.isVisible()) blueStonePack7.setVisible(false);
-        else if(blueStonePack6.isVisible()) blueStonePack6.setVisible(false);
-        else if(blueStonePack5.isVisible()) blueStonePack5.setVisible(false);
-        else if(blueStonePack4.isVisible()) blueStonePack4.setVisible(false);
-        else if(blueStonePack3.isVisible()) blueStonePack3.setVisible(false);
-        else if(blueStonePack2.isVisible()) blueStonePack2.setVisible(false);
-        else if(blueStonePack1.isVisible()) blueStonePack1.setVisible(false);
+
+    private void blueStonePackClean() {
+
+        if (blueStonePack12.isVisible()) blueStonePack12.setVisible(false);
+        else if (blueStonePack11.isVisible()) blueStonePack11.setVisible(false);
+        else if (blueStonePack10.isVisible()) blueStonePack10.setVisible(false);
+        else if (blueStonePack9.isVisible()) blueStonePack9.setVisible(false);
+        else if (blueStonePack8.isVisible()) blueStonePack8.setVisible(false);
+        else if (blueStonePack7.isVisible()) blueStonePack7.setVisible(false);
+        else if (blueStonePack6.isVisible()) blueStonePack6.setVisible(false);
+        else if (blueStonePack5.isVisible()) blueStonePack5.setVisible(false);
+        else if (blueStonePack4.isVisible()) blueStonePack4.setVisible(false);
+        else if (blueStonePack3.isVisible()) blueStonePack3.setVisible(false);
+        else if (blueStonePack2.isVisible()) blueStonePack2.setVisible(false);
+        else if (blueStonePack1.isVisible()) blueStonePack1.setVisible(false);
     }
-    private void redStonePackClean(){
-        if(redStonePack12.isVisible()) redStonePack12.setVisible(false);
-        else if(redStonePack11.isVisible()) redStonePack11.setVisible(false);
-        else if(redStonePack10.isVisible()) redStonePack10.setVisible(false);
-        else if(redStonePack9.isVisible()) redStonePack9.setVisible(false);
-        else if(redStonePack8.isVisible()) redStonePack8.setVisible(false);     
-        else if(redStonePack7.isVisible()) redStonePack7.setVisible(false);
-        else if(redStonePack6.isVisible()) redStonePack6.setVisible(false);
-        else if(redStonePack5.isVisible()) redStonePack5.setVisible(false);
-        else if(redStonePack4.isVisible()) redStonePack4.setVisible(false);
-        else if(redStonePack3.isVisible()) redStonePack3.setVisible(false);
-        else if(redStonePack2.isVisible()) redStonePack2.setVisible(false);
-        else if(redStonePack1.isVisible()) redStonePack1.setVisible(false);
+
+    private void redStonePackClean() {
+        if (redStonePack12.isVisible()) redStonePack12.setVisible(false);
+        else if (redStonePack11.isVisible()) redStonePack11.setVisible(false);
+        else if (redStonePack10.isVisible()) redStonePack10.setVisible(false);
+        else if (redStonePack9.isVisible()) redStonePack9.setVisible(false);
+        else if (redStonePack8.isVisible()) redStonePack8.setVisible(false);
+        else if (redStonePack7.isVisible()) redStonePack7.setVisible(false);
+        else if (redStonePack6.isVisible()) redStonePack6.setVisible(false);
+        else if (redStonePack5.isVisible()) redStonePack5.setVisible(false);
+        else if (redStonePack4.isVisible()) redStonePack4.setVisible(false);
+        else if (redStonePack3.isVisible()) redStonePack3.setVisible(false);
+        else if (redStonePack2.isVisible()) redStonePack2.setVisible(false);
+        else if (redStonePack1.isVisible()) redStonePack1.setVisible(false);
     }
-    private javax.swing.JLabel returnStone(int Positin, boolean isBlue){
-        if(isBlue){
-            if(Positin ==1) return blueStone1;
-            if(Positin ==2) return blueStone2;
-            if(Positin ==3) return blueStone3;
-            if(Positin ==4) return blueStone4;
-            if(Positin ==5) return blueStone5;
-            if(Positin ==6) return blueStone6;
-            if(Positin ==7) return blueStone7;
-            if(Positin ==8) return blueStone8;
-            if(Positin ==9) return blueStone9;
-            if(Positin ==10) return blueStone10;
-            if(Positin ==11) return blueStone11;
-            if(Positin ==12) return blueStone12;
-            if(Positin ==13) return blueStone13;
-            if(Positin ==14) return blueStone14;
-            if(Positin ==15) return blueStone15;
-            if(Positin ==16) return blueStone16;
-            if(Positin ==17) return blueStone17;
-            if(Positin ==18) return blueStone18;
-            if(Positin ==19) return blueStone19;
-            if(Positin ==20) return blueStone20;
-            if(Positin ==21) return blueStone21;
-            if(Positin ==22) return blueStone22;
-            if(Positin ==23) return  blueStone23;
-            if(Positin ==24) return blueStone24;
+
+    private javax.swing.JLabel returnStone(int Positin, boolean isBlue) {
+        if (isBlue) {
+            if (Positin == 1) return blueStone1;
+            if (Positin == 2) return blueStone2;
+            if (Positin == 3) return blueStone3;
+            if (Positin == 4) return blueStone4;
+            if (Positin == 5) return blueStone5;
+            if (Positin == 6) return blueStone6;
+            if (Positin == 7) return blueStone7;
+            if (Positin == 8) return blueStone8;
+            if (Positin == 9) return blueStone9;
+            if (Positin == 10) return blueStone10;
+            if (Positin == 11) return blueStone11;
+            if (Positin == 12) return blueStone12;
+            if (Positin == 13) return blueStone13;
+            if (Positin == 14) return blueStone14;
+            if (Positin == 15) return blueStone15;
+            if (Positin == 16) return blueStone16;
+            if (Positin == 17) return blueStone17;
+            if (Positin == 18) return blueStone18;
+            if (Positin == 19) return blueStone19;
+            if (Positin == 20) return blueStone20;
+            if (Positin == 21) return blueStone21;
+            if (Positin == 22) return blueStone22;
+            if (Positin == 23) return blueStone23;
+            if (Positin == 24) return blueStone24;
             return redStone1;
-        }else{
-            if(Positin ==1) return redStone1;
-            if(Positin ==2) return redStone2;
-            if(Positin ==3) return redStone3;
-            if(Positin ==4) return redStone4;
-            if(Positin ==5) return redStone5;
-            if(Positin ==6) return redStone6;
-            if(Positin ==7) return redStone7;
-            if(Positin ==8) return redStone8;
-            if(Positin ==9) return redStone9;
-            if(Positin ==10) return redStone10;
-            if(Positin ==11) return redStone11;
-            if(Positin ==12) return redStone12;
-            if(Positin ==13) return redStone13;
-            if(Positin ==14) return redStone14;
-            if(Positin ==15) return redStone15;
-            if(Positin ==16) return redStone16;
-            if(Positin ==17) return redStone17;
-            if(Positin ==18) return redStone18;
-            if(Positin ==19) return redStone19;
-            if(Positin ==20) return redStone20;
-            if(Positin ==21) return redStone21;
-            if(Positin ==22) return redStone22;
-            if(Positin ==23) return  redStone23;
-            if(Positin ==24) return redStone24;
+        } else {
+            if (Positin == 1) return redStone1;
+            if (Positin == 2) return redStone2;
+            if (Positin == 3) return redStone3;
+            if (Positin == 4) return redStone4;
+            if (Positin == 5) return redStone5;
+            if (Positin == 6) return redStone6;
+            if (Positin == 7) return redStone7;
+            if (Positin == 8) return redStone8;
+            if (Positin == 9) return redStone9;
+            if (Positin == 10) return redStone10;
+            if (Positin == 11) return redStone11;
+            if (Positin == 12) return redStone12;
+            if (Positin == 13) return redStone13;
+            if (Positin == 14) return redStone14;
+            if (Positin == 15) return redStone15;
+            if (Positin == 16) return redStone16;
+            if (Positin == 17) return redStone17;
+            if (Positin == 18) return redStone18;
+            if (Positin == 19) return redStone19;
+            if (Positin == 20) return redStone20;
+            if (Positin == 21) return redStone21;
+            if (Positin == 22) return redStone22;
+            if (Positin == 23) return redStone23;
+            if (Positin == 24) return redStone24;
             return redStone1;
         }
     }
-    private void setStoneVisible(int Positin,boolean isBlue, boolean is){
-            returnStone(Positin, isBlue).setVisible(is);
-    } 
-    private boolean isStoneVisible(int Positin,boolean isBlue){
-            return returnStone(Positin, isBlue).isVisible();
-    }  
-    private javax.swing.JLabel returnDot(int Positin, boolean isWhite){
-        if(isWhite){
-            if(Positin ==1) return highlighter1;
-            if(Positin ==2) return highlighter2;
-            if(Positin ==3) return highlighter3;
-            if(Positin ==4) return highlighter4;
-            if(Positin ==5) return highlighter5;
-            if(Positin ==6) return highlighter6;
-            if(Positin ==7) return highlighter7;
-            if(Positin ==8) return highlighter8;
-            if(Positin ==9) return highlighter9;
-            if(Positin ==10) return highlighter10;
-            if(Positin ==11) return highlighter11;
-            if(Positin ==12) return highlighter12;
-            if(Positin ==13) return highlighter13;
-            if(Positin ==14) return highlighter14;
-            if(Positin ==15) return highlighter15;
-            if(Positin ==16) return highlighter16;
-            if(Positin ==17) return highlighter17;
-            if(Positin ==18) return highlighter18;
-            if(Positin ==19) return highlighter19;
-            if(Positin ==20) return highlighter20;
-            if(Positin ==21) return highlighter21;
-            if(Positin ==22) return highlighter22;
-            if(Positin ==23) return  highlighter23;
-            if(Positin ==24) return highlighter24;
+
+    private void setStoneVisible(int Positin, boolean isBlue, boolean is) {
+        returnStone(Positin, isBlue).setVisible(is);
+    }
+
+    private boolean isStoneVisible(int Positin, boolean isBlue) {
+        return returnStone(Positin, isBlue).isVisible();
+    }
+
+    private javax.swing.JLabel returnDot(int Positin, boolean isWhite) {
+        if (isWhite) {
+            if (Positin == 1) return highlighter1;
+            if (Positin == 2) return highlighter2;
+            if (Positin == 3) return highlighter3;
+            if (Positin == 4) return highlighter4;
+            if (Positin == 5) return highlighter5;
+            if (Positin == 6) return highlighter6;
+            if (Positin == 7) return highlighter7;
+            if (Positin == 8) return highlighter8;
+            if (Positin == 9) return highlighter9;
+            if (Positin == 10) return highlighter10;
+            if (Positin == 11) return highlighter11;
+            if (Positin == 12) return highlighter12;
+            if (Positin == 13) return highlighter13;
+            if (Positin == 14) return highlighter14;
+            if (Positin == 15) return highlighter15;
+            if (Positin == 16) return highlighter16;
+            if (Positin == 17) return highlighter17;
+            if (Positin == 18) return highlighter18;
+            if (Positin == 19) return highlighter19;
+            if (Positin == 20) return highlighter20;
+            if (Positin == 21) return highlighter21;
+            if (Positin == 22) return highlighter22;
+            if (Positin == 23) return highlighter23;
+            if (Positin == 24) return highlighter24;
             return highlighter23;
-        }else{
-            if(Positin ==1) return highlighter25;
-            if(Positin ==2) return highlighter26;
-            if(Positin ==3) return highlighter27;
-            if(Positin ==4) return highlighter28;
-            if(Positin ==5) return highlighter29;
-            if(Positin ==6) return highlighter30;
-            if(Positin ==7) return highlighter31;
-            if(Positin ==8) return highlighter32;
-            if(Positin ==9) return highlighter33;
-            if(Positin ==10) return highlighter34;
-            if(Positin ==11) return highlighter35;
-            if(Positin ==12) return highlighter36;
-            if(Positin ==13) return highlighter37;
-            if(Positin ==14) return highlighter38;
-            if(Positin ==15) return highlighter39;
-            if(Positin ==16) return highlighter40;
-            if(Positin ==17) return highlighter41;
-            if(Positin ==18) return highlighter42;
-            if(Positin ==19) return highlighter43;
-            if(Positin ==20) return highlighter44;
-            if(Positin ==21) return highlighter45;
-            if(Positin ==22) return highlighter46;
-            if(Positin ==23) return  highlighter47;
-            if(Positin ==24) return highlighter48;
+        } else {
+            if (Positin == 1) return highlighter25;
+            if (Positin == 2) return highlighter26;
+            if (Positin == 3) return highlighter27;
+            if (Positin == 4) return highlighter28;
+            if (Positin == 5) return highlighter29;
+            if (Positin == 6) return highlighter30;
+            if (Positin == 7) return highlighter31;
+            if (Positin == 8) return highlighter32;
+            if (Positin == 9) return highlighter33;
+            if (Positin == 10) return highlighter34;
+            if (Positin == 11) return highlighter35;
+            if (Positin == 12) return highlighter36;
+            if (Positin == 13) return highlighter37;
+            if (Positin == 14) return highlighter38;
+            if (Positin == 15) return highlighter39;
+            if (Positin == 16) return highlighter40;
+            if (Positin == 17) return highlighter41;
+            if (Positin == 18) return highlighter42;
+            if (Positin == 19) return highlighter43;
+            if (Positin == 20) return highlighter44;
+            if (Positin == 21) return highlighter45;
+            if (Positin == 22) return highlighter46;
+            if (Positin == 23) return highlighter47;
+            if (Positin == 24) return highlighter48;
             return highlighter1;
         }
     }
-    private boolean isDotVisible(int Positin,boolean isWhite){
+
+    private boolean isDotVisible(int Positin, boolean isWhite) {
         return returnDot(Positin, isWhite).isVisible();
     }
-    private void setDotVisible(int Positin,boolean isWhite, boolean flag){
+
+    private void setDotVisible(int Positin, boolean isWhite, boolean flag) {
         returnDot(Positin, isWhite).setVisible(flag);
     }
-    private void _move(int n, int position, int[] positionArr){
+
+    private void _move(int n, int position, int[] positionArr) {
         boolean Moved = false;
-        
-        for(int i=0; i<n; i++){
-            
-            if(isMoveWaitColorBlue && game.isBlueTurn()){
-                if(moveWaitPosition == positionArr[i] && game.isGameBordEmpty(position)){
-                    game.moveBluePiece(positionArr[i],position);
-                    setStoneVisible(positionArr[i],true , false);
-                    setStoneVisible(position,true , true);
+
+        for (int i = 0; i < n; i++) {
+
+            if (isMoveWaitColorBlue && game.isBlueTurn()) {
+                if (moveWaitPosition == positionArr[i] && game.isGameBordEmpty(position)) {
+                    game.moveBluePiece(positionArr[i], position);
+                    setStoneVisible(positionArr[i], true, false);
+                    setStoneVisible(position, true, true);
                     playMusic();
                     cleanDots();
-                    if(game.isBlueWinInNextMove(position)){
+                    if (game.isBlueWinInNextMove(position)) {
 //                        System.out.println("blue can take a red stone");
                         ShowText("blue can take a red stone", true);
                         blueCanRemove = true;
-                    }else{
+                    } else {
                         ShowText("Wait for Red to move", false);
                     }
                     Moved = true;
                     break;
                 }
-            }
-            else if(!isMoveWaitColorBlue && !game.isBlueTurn()){
-                if(moveWaitPosition==positionArr[i]   && game.isGameBordEmpty(position)){
-                    game.moveRedPiece(positionArr[i] ,position);
-                    setStoneVisible(positionArr[i] ,false , false);
-                    setStoneVisible(position,false , true);
+            } else if (!isMoveWaitColorBlue && !game.isBlueTurn()) {
+                if (moveWaitPosition == positionArr[i] && game.isGameBordEmpty(position)) {
+                    game.moveRedPiece(positionArr[i], position);
+                    setStoneVisible(positionArr[i], false, false);
+                    setStoneVisible(position, false, true);
                     playMusic();
                     cleanDots();
-                    if(game.isRedWinInNextMove(position)){
+                    if (game.isRedWinInNextMove(position)) {
 //                      System.out.println("red can take a blue stone");
                         ShowText("Red can take a blue stone", false);
                         redCanRemove = true;
-                    }else{
+                    } else {
                         ShowText("wait for blue to move", true);
                     }
                     Moved = true;
                     break;
                 }
-                
+
             }
-            
+
         }
-        if(!Moved) System.out.println("Wrong entry");
+        if (!Moved) System.out.println("Wrong entry");
         isWaitForMove = false;
     }
-    private void Move(int position, int position1,int position2 ,int position3){
+
+    private void Move(int position, int position1, int position2, int position3) {
         int[] positionArr = {position1, position2, position3};
         _move(3, position, positionArr);
-    }    
-    private void Move(int position, int position1,int position2 ,int position3, int position4){
+    }
+
+    private void Move(int position, int position1, int position2, int position3, int position4) {
         int[] positionArr = {position1, position2, position3, position4};
         _move(4, position, positionArr);
     }
-    private void waitForMove(int position){
-        if(game.isBlueCanMove() && isStoneVisible(position, true) && game.isBlueTurn()){
+
+    private void waitForMove(int position) {
+        if (game.isBlueCanMove() && isStoneVisible(position, true) && game.isBlueTurn()) {
             LinkedList<Integer> empty = game.emptySpot(position);
-            
+
             cleanDots();
-            setDotVisible(position,false,true);
-            for(int i =0; i<game.emptySpot(position).size(); i++){
-                setDotVisible((int)game.emptySpot(position).get(i) ,true,true);
+            setDotVisible(position, false, true);
+            for (int i = 0; i < game.emptySpot(position).size(); i++) {
+                setDotVisible((int) game.emptySpot(position).get(i), true, true);
             }
-            
+
             isWaitForMove = true;
             moveWaitPosition = position;
             isMoveWaitColorBlue = true;
 //            ShowText("wait for blue to move", true);
 //            System.out.println("wait for blue to move "+ moveWaitPosition);
-        }
-        else if(game.isRedCanMove()  && isStoneVisible(position, false) && !game.isBlueTurn()){
-            
+        } else if (game.isRedCanMove() && isStoneVisible(position, false) && !game.isBlueTurn()) {
+
             cleanDots();
-            setDotVisible(position,false,true);
-            for(int i =0; i<game.emptySpot(position).size(); i++){
-                setDotVisible((int)game.emptySpot(position).get(i) ,true,true);
+            setDotVisible(position, false, true);
+            for (int i = 0; i < game.emptySpot(position).size(); i++) {
+                setDotVisible((int) game.emptySpot(position).get(i), true, true);
             }
-            
+
             isWaitForMove = true;
             moveWaitPosition = position;
             isMoveWaitColorBlue = false;
@@ -284,134 +302,135 @@ public class board extends javax.swing.JFrame {
 //            System.out.println("wait for red for move " + moveWaitPosition);
         }
     }
-    private void addStone(int position){
-        if(game.isBlueTurn() && !game.isBlueCanMove() && game.canAddStone(1)){
-            
+
+    private void addStone(int position) {
+        if (game.isBlueTurn() && !game.isBlueCanMove() && game.canAddStone(1)) {
+
             game.addBluePiece(position);
             setStoneVisible(position, true, true);
             blueStonePackClean();
             playMusic();
-            
-            if(game.isBlueWinInNextMove(position)){
+
+            if (game.isBlueWinInNextMove(position)) {
                 System.out.println("blue can take a red stone");
                 blueCanRemove = true;
                 ShowText("blue can take a red stone", true);
-            }else{
-                if(game.isBlueCanMove()){
+            } else {
+                if (game.isBlueCanMove()) {
                     ShowText("Blue can Move", true);
-                }else{
+                } else {
                     ShowText("Red Can Add Stone", false);
                 }
             }
-            
-        }else if(!game.isBlueTurn() && !game.isRedCanMove() && game.canAddStone(0)){
+
+        } else if (!game.isBlueTurn() && !game.isRedCanMove() && game.canAddStone(0)) {
             game.addRedPiece(position);
             setStoneVisible(position, false, true);
             redStonePackClean();
-            
-            if(game.isRedWinInNextMove(position)){
+
+            if (game.isRedWinInNextMove(position)) {
                 System.out.println("red can take a red sotone");
                 redCanRemove = true;
                 ShowText("red can take a blue stone", false);
-            }else{
-                if(game.isRedCanMove()){
+            } else {
+                if (game.isRedCanMove()) {
                     ShowText("Red can move", false);
-                }else{
+                } else {
                     ShowText("Blue Can Add Stone", true);
                 }
             }
-            
+
             playMusic();
-            
+
         }
     }
-    private void _mouseClicked(int position){
 
-        if(blueCanRemove){
-            if(returnStone(position, false).isVisible()){
+    private void _mouseClicked(int position) {
+
+        if (blueCanRemove) {
+            if (returnStone(position, false).isVisible()) {
                 game.removeRedPiece(position);
                 setStoneVisible(position, false, false);
                 blueCanRemove = false;
-                if(game.isRedCanMove())  ShowText("Red Can move", false);
-                else                      ShowText("Red can add", false);
-            }else{
+                if (game.isRedCanMove()) ShowText("Red Can move", false);
+                else ShowText("Red can add", false);
+            } else {
                 System.out.println("Wronge entry");
             }
-            
-        }
-        else if(redCanRemove){
-            if(returnStone(position, true).isVisible()){    
+
+        } else if (redCanRemove) {
+            if (returnStone(position, true).isVisible()) {
                 game.removeBluePiece(position);
                 setStoneVisible(position, true, false);
-                redCanRemove= false;
-                if(game.isBlueCanMove())  ShowText("Blue Can move", true);
-                else                      ShowText("Blue can add", true);
-            }else{
+                redCanRemove = false;
+                if (game.isBlueCanMove()) ShowText("Blue Can move", true);
+                else ShowText("Blue can add", true);
+            } else {
                 System.out.println("Wronge entry");
             }
-            
-        }
-        
-        else if(game.isGameBordEmpty(position)){
+
+        } else if (game.isGameBordEmpty(position)) {
             addStone(position);
-            if(game.isDraw()){
+            if (game.isDraw()) {
                 System.out.println("Draw");
                 RedText.setVisible(true);
                 BlueText.setVisible(true);
                 RedText.setText("Draw");
                 BlueText.setText("Draw");
             }
-        }
-        else if(!game.isGameBordEmpty(position)){
+        } else if (!game.isGameBordEmpty(position)) {
             waitForMove(position);
         }
-        if(game.isBlueWin()){
+        if (game.isBlueWin()) {
             System.out.println("Blue wins");
             ShowText("Blue wins", true);
             return;
-        }if(game.isRedWin()){
+        }
+        if (game.isRedWin()) {
             System.out.println("Red wins");
             ShowText("Red wins", false);
         }
-        
+
     }
-    private void mouseClicked(int position,int position1 ,int position2 ,int position3){
-        if(isEnd()) return;
-        
-        if(isWaitForMove){
-            Move(position,position1,position2,position3);
-        }
-        else _mouseClicked(position);
+
+    private void mouseClicked(int position, int position1, int position2, int position3) {
+        if (isEnd()) return;
+
+        if (isWaitForMove) {
+            Move(position, position1, position2, position3);
+        } else _mouseClicked(position);
     }
-    private void mouseClicked(int position,int position1 ,int position2 ,int position3, int position4){
-        if(isEnd()) return;
-        
-        if(isWaitForMove){
-            Move(position,position1,position2,position3, position4);
-        }
-        else _mouseClicked(position);
+
+    private void mouseClicked(int position, int position1, int position2, int position3, int position4) {
+        if (isEnd()) return;
+
+        if (isWaitForMove) {
+            Move(position, position1, position2, position3, position4);
+        } else _mouseClicked(position);
     }
-    private boolean isEnd(){
-        if(game.isBlueWin()){
+
+    private boolean isEnd() {
+        if (game.isBlueWin()) {
             System.out.println("Blue wins");
             ShowText("Blue wins", true);
             return true;
-        }if(game.isRedWin()){
+        }
+        if (game.isRedWin()) {
             System.out.println("Red wins");
             ShowText("Red wins", false);
             return true;
-        }if(game.isDraw()){
+        }
+        if (game.isDraw()) {
             System.out.println("Draw");
             RedText.setVisible(true);
             BlueText.setVisible(true);
             RedText.setText("Draw");
             BlueText.setText("Draw");
             return true;
-        }
-        else return false;
+        } else return false;
     }
-    
-    
+
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -1420,102 +1439,102 @@ public class board extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+    private void position1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position1MouseClicked
+        mouseClicked(1, 4, 2, 10);
+    }//GEN-LAST:event_position1MouseClicked
+
     private void position2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position2MouseClicked
-        mouseClicked(2,1,3,5);
+        mouseClicked(2, 1, 3, 5);
     }//GEN-LAST:event_position2MouseClicked
 
     private void position3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position3MouseClicked
-       mouseClicked(3,2,6,15);
+        mouseClicked(3, 2, 6, 15);
     }//GEN-LAST:event_position3MouseClicked
 
     private void position4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position4MouseClicked
-        mouseClicked(4,1,7,11,5);
+        mouseClicked(4, 1, 7, 11, 5);
     }//GEN-LAST:event_position4MouseClicked
 
     private void position5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position5MouseClicked
-        mouseClicked(5,2,8,4,6);
+        mouseClicked(5, 2, 8, 4, 6);
     }//GEN-LAST:event_position5MouseClicked
 
     private void position6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position6MouseClicked
-        mouseClicked(6,3,9,5,14);
+        mouseClicked(6, 3, 9, 5, 14);
     }//GEN-LAST:event_position6MouseClicked
 
     private void position7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position7MouseClicked
-       mouseClicked(7,4,8,12);
+        mouseClicked(7, 4, 8, 12);
     }//GEN-LAST:event_position7MouseClicked
 
     private void position8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position8MouseClicked
-        mouseClicked(8,5,7,9);
+        mouseClicked(8, 5, 7, 9);
     }//GEN-LAST:event_position8MouseClicked
 
     private void position9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position9MouseClicked
-       mouseClicked(9,8,6,18);
+        mouseClicked(9, 8, 6, 18);
     }//GEN-LAST:event_position9MouseClicked
 
     private void position10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position10MouseClicked
-        mouseClicked(10,1,22,11);
+        mouseClicked(10, 1, 22, 11);
     }//GEN-LAST:event_position10MouseClicked
 
     private void position11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position11MouseClicked
-       mouseClicked(11,10,12,4,19);
+        mouseClicked(11, 10, 12, 4, 19);
     }//GEN-LAST:event_position11MouseClicked
 
     private void position12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position12MouseClicked
-       mouseClicked(12,7,16,11);
+        mouseClicked(12, 7, 16, 11);
     }//GEN-LAST:event_position12MouseClicked
 
     private void position13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position13MouseClicked
-        mouseClicked(13,9,18,14);
+        mouseClicked(13, 9, 18, 14);
     }//GEN-LAST:event_position13MouseClicked
 
     private void position14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position14MouseClicked
-        mouseClicked(14,6,21,13,15);
+        mouseClicked(14, 6, 21, 13, 15);
     }//GEN-LAST:event_position14MouseClicked
 
     private void position15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position15MouseClicked
-        mouseClicked(15,3,24,14);
+        mouseClicked(15, 3, 24, 14);
     }//GEN-LAST:event_position15MouseClicked
 
     private void position16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position16MouseClicked
-        mouseClicked(16,12,17,19);
+        mouseClicked(16, 12, 17, 19);
     }//GEN-LAST:event_position16MouseClicked
 
     private void position17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position17MouseClicked
-        mouseClicked(17,20,16,18);
+        mouseClicked(17, 20, 16, 18);
     }//GEN-LAST:event_position17MouseClicked
 
     private void position18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position18MouseClicked
-        mouseClicked(18,13,17,21);
+        mouseClicked(18, 13, 17, 21);
     }//GEN-LAST:event_position18MouseClicked
 
     private void position19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position19MouseClicked
-        mouseClicked(19,11,20,22,16);
+        mouseClicked(19, 11, 20, 22, 16);
     }//GEN-LAST:event_position19MouseClicked
 
     private void position20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position20MouseClicked
-        mouseClicked(20,17,23,21,19);                                       
+        mouseClicked(20, 17, 23, 21, 19);
     }//GEN-LAST:event_position20MouseClicked
 
     private void position21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position21MouseClicked
-        mouseClicked(21,18,24,20,14);
+        mouseClicked(21, 18, 24, 20, 14);
     }//GEN-LAST:event_position21MouseClicked
 
     private void position22MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position22MouseClicked
-        mouseClicked(22,19,10,23);
+        mouseClicked(22, 19, 10, 23);
     }//GEN-LAST:event_position22MouseClicked
 
     private void position23MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position23MouseClicked
-        mouseClicked(23,20,22,24);
+        mouseClicked(23, 20, 22, 24);
     }//GEN-LAST:event_position23MouseClicked
 
     private void position24MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position24MouseClicked
-        mouseClicked(24,21,15,23);
+        mouseClicked(24, 21, 15, 23);
     }//GEN-LAST:event_position24MouseClicked
 
-    private void position1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_position1MouseClicked
-        mouseClicked(1,4,2,10);
-    }//GEN-LAST:event_position1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -1524,7 +1543,7 @@ public class board extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
