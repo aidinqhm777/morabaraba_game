@@ -21,6 +21,8 @@ public class Board extends javax.swing.JFrame {
     private boolean isWaitForAdd = true;
     private boolean isWaitForRemove = false;
     private boolean isProcessWasSuccessful = false;
+    private boolean isWaitForMoveSave;
+    private boolean isWaitForAddSave;
 
 
     private Game game;
@@ -370,29 +372,6 @@ public class Board extends javax.swing.JFrame {
     }
 
 
-    private void redRemoveBlueStone(int position) {
-        if (returnStone(position, true).isVisible()) {
-            game.removeBluePiece(position);
-            setStoneVisible(position, true, false);
-            if (game.isBlueCanMove()) ShowText("Blue Can move", true);
-            else ShowText("Blue can add", true);
-        } else {
-            System.out.println("Wrong entry");
-        }
-    }
-
-    private void blueRemoveRedStone(int position) {
-        if (returnStone(position, false).isVisible()) {
-            game.removeRedPiece(position);
-            setStoneVisible(position, false, false);
-            if (game.isRedCanMove()) ShowText("Red Can move", false);
-            else ShowText("Red can add", false);
-        } else {
-            System.out.println("Wrong entry");
-        }
-
-    }
-
     private void DrawText() {
         RedText.setVisible(true);
         BlueText.setVisible(true);
@@ -480,7 +459,7 @@ public class Board extends javax.swing.JFrame {
     private void nonEmptyClickedAction(int position) {
         if (isWaitForRemove) {
             removeState(position);
-        } else if (isWaitForMove){
+        } else if (isWaitForMove) {
             //take the move first position
             moveState(position);
         } else {
@@ -504,10 +483,23 @@ public class Board extends javax.swing.JFrame {
 
     private void removeState(int position) {
         removeTheStone(position);
-
+        if (isProcessWasSuccessful)resetTheState();
     }
 
-    private void resetTheMoveState(){
+    private void resetTheState(){
+        isWaitForMove = isWaitForMoveSave;
+        isWaitForAdd = isWaitForAddSave;
+    }
+
+    private void saveTheState(){
+        if (isWaitForMove) isWaitForMoveSave = isWaitForMove;
+        if (isWaitForAdd) isWaitForAddSave = isWaitForAdd;
+        isWaitForAdd = false;
+        isWaitForMove = false;
+    }
+
+
+    private void resetTheMoveState() {
         movePosition = -1;
         cleanDots();
     }
@@ -525,9 +517,9 @@ public class Board extends javax.swing.JFrame {
     }
 
     private void removeTheStone(int position) {
-        if (game.isBlueTurn()){
+        if (game.isBlueTurn()) {
             blueRemoveRedStone(position);
-        }else{
+        } else {
             redRemoveBlueStone(position);
         }
         game.changeTheTurns();
@@ -535,41 +527,60 @@ public class Board extends javax.swing.JFrame {
     }
 
     private void addStone(int position) {
-        if(game.isBlueTurn()) {
+        if (game.isBlueTurn()) {
             addBlueStone(position);
-        }else {
+        } else {
             addRedStone(position);
         }
     }
 
-    private void addRedStone(int position){
+    private void addRedStone(int position) {
         game.addRedPiece(position);
         setStoneVisible(position, false, true);
         redStonePackClean();
         playMusic();
 
         if (game.isRedWinInNextMove(position)) {
-            redCanRemove = true;
             isWaitForRemove = true;
-            ShowText("red can take a blue stone", false);
-        }else{
+            saveTheState();
+        } else {
             game.changeTheTurns();
         }
     }
 
-    private void addBlueStone(int position){
+    private void addBlueStone(int position) {
         game.addBluePiece(position);
         setStoneVisible(position, true, true);
         blueStonePackClean();
         playMusic();
 
         if (game.isBlueWinInNextMove(position)) {
-            blueCanRemove = true;
             isWaitForRemove = true;
-            ShowText("blue can take a red stone", true);
-        }else{
+            saveTheState();
+        } else {
             game.changeTheTurns();
         }
+    }
+
+    private void redRemoveBlueStone(int position) {
+        if (game.isGameBordBlue(position)) {
+            game.removeBluePiece(position);
+            setStoneVisible(position, true, false);
+            isProcessWasSuccessful = true;
+        } else {
+            System.err.println("click on blue stone!");
+        }
+    }
+
+    private void blueRemoveRedStone(int position) {
+        if (game.isGameBordRed(position)) {
+            game.removeRedPiece(position);
+            setStoneVisible(position, false, false);
+            isProcessWasSuccessful = true;
+        } else {
+            System.out.println("click on red stone");
+        }
+
     }
 
     // ----------------------------------------------- end of part  ------------------------------------------------- //

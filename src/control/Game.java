@@ -488,13 +488,13 @@ public class Game {
         return (isGameBordRed(a1) && isGameBordRed(a2)) || (isGameBordRed(b1) && isGameBordRed(b2));
     }
 
-    private boolean isGameBordBlue(int position) {
+    public boolean isGameBordBlue(int position) {
         int i = positionToij(position).i;
         int j = positionToij(position).j;
         return gameBord[i][j] == BLUE;
     }
 
-    private boolean isGameBordRed(int position) {
+    public boolean isGameBordRed(int position) {
         int i = positionToij(position).i;
         int j = positionToij(position).j;
         return gameBord[i][j] == RED;
