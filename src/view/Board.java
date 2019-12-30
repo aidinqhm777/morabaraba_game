@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import control.Game;
@@ -11,10 +6,8 @@ import control.MoveSound;
 import java.util.LinkedList;
 
 
-public class board extends javax.swing.JFrame {
+public class Board extends javax.swing.JFrame {
 
-    private boolean isWaitForMove = false;
-    private int moveWaitPosition;
     private boolean isMoveWaitColorBlue;
     private boolean blueCanRemove = false;
     private boolean redCanRemove = false;
@@ -22,10 +15,18 @@ public class board extends javax.swing.JFrame {
     private static final int BLUE = 1;
     private static final int RED = 0;
 
-    Game game;
-    MoveSound play;
+    //state variables
+    private int movePosition = -1;
+    private boolean isWaitForMove = false;
+    private boolean isWaitForAdd = true;
+    private boolean isWaitForRemove = false;
+    private boolean isProcessWasSuccessful = false;
 
-    public board() {
+
+    private Game game;
+    private MoveSound play;
+
+    private Board() {
         game = new Game();
         play = new MoveSound();
         initComponents();
@@ -259,7 +260,7 @@ public class board extends javax.swing.JFrame {
         boolean moved = false;
         for (int i = 0; i < connectedSpot.size(); i++) {
             if (isMoveWaitColorBlue && game.isBlueTurn()) {
-                if (moveWaitPosition == connectedSpot.get(i) && game.isGameBordEmpty(position)) {
+                if (movePosition == connectedSpot.get(i) && game.isGameBordEmpty(position)) {
                     game.moveBluePiece(connectedSpot.get(i), position);
                     setStoneVisible(connectedSpot.get(i), true, false);
                     setStoneVisible(position, true, true);
@@ -276,7 +277,7 @@ public class board extends javax.swing.JFrame {
                     break;
                 }
             } else if (!isMoveWaitColorBlue && !game.isBlueTurn()) {
-                if (moveWaitPosition == connectedSpot.get(i) && game.isGameBordEmpty(position)) {
+                if (movePosition == connectedSpot.get(i) && game.isGameBordEmpty(position)) {
                     game.moveRedPiece(connectedSpot.get(i), position);
                     setStoneVisible(connectedSpot.get(i), false, false);
                     setStoneVisible(position, false, true);
@@ -310,7 +311,7 @@ public class board extends javax.swing.JFrame {
             }
 
             isWaitForMove = true;
-            moveWaitPosition = position;
+            movePosition = position;
             isMoveWaitColorBlue = true;
         } else if (game.isRedCanMove() && isStoneVisible(position, false) && !game.isBlueTurn()) {
 
@@ -321,14 +322,14 @@ public class board extends javax.swing.JFrame {
             }
 
             isWaitForMove = true;
-            moveWaitPosition = position;
+            movePosition = position;
             isMoveWaitColorBlue = false;
 //            ShowText("wait for red for move", false);
-//            System.out.println("wait for red for move " + moveWaitPosition);
+//            System.out.println("wait for red for move " + movePosition);
         }
     }
 
-    private void addStone(int position) {
+    private void addStone_old(int position) {
         if (game.isBlueTurn() && !game.isBlueCanMove() && game.canAddStone(BLUE)) {
 
             game.addBluePiece(position);
@@ -363,11 +364,11 @@ public class board extends javax.swing.JFrame {
                     ShowText("Blue Can Add Stone", true);
                 }
             }
-
             playMusic();
             ai_Action();
         }
     }
+
 
     private void redRemoveBlueStone(int position) {
         if (returnStone(position, true).isVisible()) {
@@ -428,7 +429,7 @@ public class board extends javax.swing.JFrame {
 
     }
 
-    private void mouseClicked(int position) {
+    private void mouseClicked_old(int position) {
         if (isFinished()) return;
 
         if (isWaitForMove) {
@@ -452,6 +453,121 @@ public class board extends javax.swing.JFrame {
             return true;
         } else return false;
     }
+
+
+    // ----------------------------------- this part of is going to rewrite ----------------------------------------- //
+    //todo
+    //todo
+    //todo
+    //todo
+
+    private void mouseClicked(int position) {
+        if (game.isGameBordEmpty(position)) {
+            emptyClickedAction(position);
+        } else {
+            nonEmptyClickedAction(position);
+        }
+    }
+
+    private void emptyClickedAction(int position) {
+        if (isWaitForAdd) {
+            addState(position);
+        } else if (isWaitForMove) {
+            //take the move second position
+            moveState(position);
+        } else {
+            System.err.println("error in 'empty' state part");
+        }
+    }
+
+    private void nonEmptyClickedAction(int position) {
+        if (isWaitForRemove) {
+            removeState(position);
+        } else if (isWaitForMove) {
+            //take the move first position
+            moveState(position);
+        } else {
+            System.err.println("error in 'non empty' state part");
+        }
+    }
+
+    private void addState(int position) {
+        addStone(position);
+        checkNextState();
+    }
+
+    private void moveState(int position) {
+        if (movePosition == -1) {
+            takeMovePosition(position);
+        } else {
+            moveTheStone(position);
+            if (!isProcessWasSuccessful) resetTheMoveState();
+        }
+    }
+
+    private void removeState(int position) {
+        removeTheStone(position);
+    }
+
+    private void resetTheMoveState(){
+        movePosition = -1;
+        cleanDots();
+    }
+
+    private void checkNextState() {
+        // check if add state is finished and we enter the move state?
+    }
+
+    private void takeMovePosition(int position) {
+        movePosition = position;
+    }
+
+    private void moveTheStone(int position) {
+        isProcessWasSuccessful = true;
+    }
+
+    private void removeTheStone(int position) {
+    }
+
+    private void addStone(int position) {
+        if(game.isBlueTurn() && !game.isBlueCanMove() && game.canAddStone(BLUE)) {
+
+            game.addBluePiece(position);
+            setStoneVisible(position, true, true);
+            blueStonePackClean();
+            playMusic();
+
+            if (game.isBlueWinInNextMove(position)) {
+                blueCanRemove = true;
+                ShowText("blue can take a red stone", true);
+                ai_Action();
+            } else {
+                if (game.isBlueCanMove()) {
+                    ShowText("Red can move", false);
+                } else {
+                    ShowText("Red Can Add Stone", false);
+                }
+            }
+        }else if (!game.isBlueTurn() && !game.isRedCanMove() && game.canAddStone(RED)) {
+
+            game.addRedPiece(position);
+            setStoneVisible(position, false, true);
+            redStonePackClean();
+            if (game.isRedWinInNextMove(position)) {
+                redCanRemove = true;
+                ShowText("red can take a blue stone", false);
+            } else {
+                if (game.isRedCanMove()) {
+                    ShowText("blue can move", true);
+                } else {
+                    ShowText("Blue Can Add Stone", true);
+                }
+            }
+            playMusic();
+        }
+    }
+
+    // ----------------------------------------------- end of part  ------------------------------------------------- //
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1574,20 +1690,20 @@ public class board extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(board.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Board.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(board.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Board.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(board.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Board.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(board.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Board.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new board().setVisible(true);
+                new Board().setVisible(true);
             }
         });
     }

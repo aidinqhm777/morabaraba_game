@@ -61,7 +61,7 @@ public class Game {
     //methods
 
     /**
-     * @param position position in a game board
+     * @param position position in a game Board
      * @return return the empty spots that connected to the position
      */
     public LinkedList<Integer> returnEmptySpots(int position) {
@@ -78,7 +78,7 @@ public class Game {
     }
 
     /**
-     * @param position position in a game board
+     * @param position position in a game Board
      * @return return the connected spots to position
      */
     public LinkedList<Integer> returnConnectedSpot(int position) {
