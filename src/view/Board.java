@@ -374,8 +374,6 @@ public class Board extends javax.swing.JFrame {
         if (returnStone(position, true).isVisible()) {
             game.removeBluePiece(position);
             setStoneVisible(position, true, false);
-            redCanRemove = false;
-            ai_Action();
             if (game.isBlueCanMove()) ShowText("Blue Can move", true);
             else ShowText("Blue can add", true);
         } else {
@@ -387,7 +385,6 @@ public class Board extends javax.swing.JFrame {
         if (returnStone(position, false).isVisible()) {
             game.removeRedPiece(position);
             setStoneVisible(position, false, false);
-            blueCanRemove = false;
             if (game.isRedCanMove()) ShowText("Red Can move", false);
             else ShowText("Red can add", false);
         } else {
@@ -483,7 +480,7 @@ public class Board extends javax.swing.JFrame {
     private void nonEmptyClickedAction(int position) {
         if (isWaitForRemove) {
             removeState(position);
-        } else if (isWaitForMove) {
+        } else if (isWaitForMove){
             //take the move first position
             moveState(position);
         } else {
@@ -507,6 +504,7 @@ public class Board extends javax.swing.JFrame {
 
     private void removeState(int position) {
         removeTheStone(position);
+
     }
 
     private void resetTheMoveState(){
@@ -527,43 +525,50 @@ public class Board extends javax.swing.JFrame {
     }
 
     private void removeTheStone(int position) {
+        if (game.isBlueTurn()){
+            blueRemoveRedStone(position);
+        }else{
+            redRemoveBlueStone(position);
+        }
+        game.changeTheTurns();
+        isWaitForRemove = false;
     }
 
     private void addStone(int position) {
-        if(game.isBlueTurn() && !game.isBlueCanMove() && game.canAddStone(BLUE)) {
+        if(game.isBlueTurn()) {
+            addBlueStone(position);
+        }else {
+            addRedStone(position);
+        }
+    }
 
-            game.addBluePiece(position);
-            setStoneVisible(position, true, true);
-            blueStonePackClean();
-            playMusic();
+    private void addRedStone(int position){
+        game.addRedPiece(position);
+        setStoneVisible(position, false, true);
+        redStonePackClean();
+        playMusic();
 
-            if (game.isBlueWinInNextMove(position)) {
-                blueCanRemove = true;
-                ShowText("blue can take a red stone", true);
-                ai_Action();
-            } else {
-                if (game.isBlueCanMove()) {
-                    ShowText("Red can move", false);
-                } else {
-                    ShowText("Red Can Add Stone", false);
-                }
-            }
-        }else if (!game.isBlueTurn() && !game.isRedCanMove() && game.canAddStone(RED)) {
+        if (game.isRedWinInNextMove(position)) {
+            redCanRemove = true;
+            isWaitForRemove = true;
+            ShowText("red can take a blue stone", false);
+        }else{
+            game.changeTheTurns();
+        }
+    }
 
-            game.addRedPiece(position);
-            setStoneVisible(position, false, true);
-            redStonePackClean();
-            if (game.isRedWinInNextMove(position)) {
-                redCanRemove = true;
-                ShowText("red can take a blue stone", false);
-            } else {
-                if (game.isRedCanMove()) {
-                    ShowText("blue can move", true);
-                } else {
-                    ShowText("Blue Can Add Stone", true);
-                }
-            }
-            playMusic();
+    private void addBlueStone(int position){
+        game.addBluePiece(position);
+        setStoneVisible(position, true, true);
+        blueStonePackClean();
+        playMusic();
+
+        if (game.isBlueWinInNextMove(position)) {
+            blueCanRemove = true;
+            isWaitForRemove = true;
+            ShowText("blue can take a red stone", true);
+        }else{
+            game.changeTheTurns();
         }
     }
 

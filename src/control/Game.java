@@ -237,15 +237,17 @@ public class Game {
         int i = positionToij(position).i;
         int j = positionToij(position).j;
         gameBord[i][j] = BLUE;
-        blueTurn = false;
         blueStonePackCount--;
+    }
+
+    public void changeTheTurns(){
+        blueTurn = !blueTurn;
     }
 
     public void addRedPiece(int position) {
         int i = positionToij(position).i;
         int j = positionToij(position).j;
         gameBord[i][j] = RED;
-        blueTurn = true;
         redStonePackCount--;
     }
 
