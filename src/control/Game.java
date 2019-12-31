@@ -116,7 +116,7 @@ public class Game {
             return returnLinkedList(1, 22, 11);
         }
         if (position == 11) {
-            return returnLinkedList(10, 12, 4, 19);
+            return returnLinkedList(10, 12, 4, 18);
         }
         if (position == 12) {
             return returnLinkedList(7, 16, 11);

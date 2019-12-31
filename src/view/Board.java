@@ -32,9 +32,10 @@ public class Board extends javax.swing.JFrame {
         game = new Game();
         play = new MoveSound();
         initComponents();
+        cleanDots();
+        highlighter34.setVisible(true);
         RedText.setVisible(false);
         BlueText.setText("Blue Can Add Stone");
-        cleanDots();
     }
 
 
@@ -234,8 +235,8 @@ public class Board extends javax.swing.JFrame {
             if (position == 7) return highlighter31;
             if (position == 8) return highlighter32;
             if (position == 9) return highlighter33;
-            if (position == 10) return highlighter34;
-            if (position == 11) return highlighter35;
+            if (position == 10) return highlighter35;
+            if (position == 11) return highlighter34;
             if (position == 12) return highlighter36;
             if (position == 13) return highlighter37;
             if (position == 14) return highlighter38;
@@ -480,7 +481,6 @@ public class Board extends javax.swing.JFrame {
             takeMovePosition(position);
         } else {
             moveTheStone(position);
-            if (!isProcessWasSuccessful) resetTheMoveState();
         }
     }
 
@@ -583,7 +583,6 @@ public class Board extends javax.swing.JFrame {
             return;
         }
         System.out.println("move the stone from " + movePosition + " to " + position);
-        isProcessWasSuccessful = true;
         resetTheMoveState();
     }
 
