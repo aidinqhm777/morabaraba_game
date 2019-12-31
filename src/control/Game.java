@@ -110,7 +110,7 @@ public class Game {
             return returnLinkedList(5, 7, 9);
         }
         if (position == 9) {
-            return returnLinkedList(8, 6, 18);
+            return returnLinkedList(8, 6, 13);
         }
         if (position == 10) {
             return returnLinkedList(1, 22, 11);
@@ -250,6 +250,7 @@ public class Game {
 
     public void changeTheTurns(){
         blueTurn = !blueTurn;
+        System.out.println("its " + (blueTurn? "blue" : "red") + " turn");
     }
 
     public void addRedPiece(int position) {
@@ -288,13 +289,13 @@ public class Game {
     public void moveBluePiece(int bluePosition, int emptyPosition) {
         gameBord[positionToij(emptyPosition).i][positionToij(emptyPosition).j] = 1;
         gameBord[positionToij(bluePosition).i][positionToij(bluePosition).j] = EMPTY;
-        blueTurn = !blueTurn;
+        changeTheTurns();
     }
 
     public void moveRedPiece(int redPosition, int emptyPosition) {
         gameBord[positionToij(emptyPosition).i][positionToij(emptyPosition).j] = 1;
         gameBord[positionToij(redPosition).i][positionToij(redPosition).j] = EMPTY;
-        blueTurn = !blueTurn;
+        changeTheTurns();
     }
 
     //todo

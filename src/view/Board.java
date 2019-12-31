@@ -515,21 +515,21 @@ public class Board extends javax.swing.JFrame {
         if (isDeletiableFromPack()) deleteFromPack();
     }
 
-    private boolean isDeletiableFromPack(){
-        if (game.isBlueTurn()){
+    private boolean isDeletiableFromPack() {
+        if (game.isBlueTurn()) {
             if (game.isRedCanAdd()) return true;
-        }else{
+        } else {
             if (game.isBlueCanAdd()) return true;
         }
         return false;
     }
 
-    private void deleteFromPack(){
-        if (game.isBlueTurn()){
+    private void deleteFromPack() {
+        if (game.isBlueTurn()) {
             game.removeRedPack();
             redStonePackClean();
             resetTheRemoveState();
-        }else{
+        } else {
             game.removeBluePack();
             blueStonePackClean();
             resetTheRemoveState();
@@ -551,11 +551,54 @@ public class Board extends javax.swing.JFrame {
     }
 
     private void takeMovePosition(int position) {
-        movePosition = position;
+        if (game.isBlueTurn() && game.isGameBordBlue(position)) {
+            movePosition = position;
+        } else if (!game.isBlueTurn() && game.isGameBordRed(position)) {
+            movePosition = position;
+        } else {
+            System.err.println(">>> move first position");
+            resetTheMoveState();
+            return;
+        }
+        System.out.println("take the move first position :" + position);
+        moveVisualDots(position);
     }
 
     private void moveTheStone(int position) {
+        if (game.isBlueTurn() && game.isGameBordEmpty(position) && isConnected(movePosition, position)){
+
+            game.moveBluePiece(movePosition, position);
+            setStoneVisible(movePosition, true, false);
+            setStoneVisible(position, true, true);
+
+        } else if (!game.isBlueTurn() && game.isGameBordEmpty(position) && isConnected(movePosition, position)) {
+
+            game.moveRedPiece(movePosition, position);
+            setStoneVisible(movePosition, false, false);
+            setStoneVisible(position, false, true);
+
+        } else {
+            System.err.println(">>> move second position");
+            resetTheMoveState();
+            return;
+        }
+        System.out.println("move the stone from " + movePosition + " to " + position);
         isProcessWasSuccessful = true;
+        resetTheMoveState();
+    }
+
+    public boolean isConnected(int firstPosition, int secondPosition){
+        int searchResult = game.returnConnectedSpot(firstPosition).indexOf(secondPosition);
+        if (searchResult != -1){
+            return true;
+        }else return false;
+    }
+
+    private void moveVisualDots(int position){
+        setDotVisible(position, false, true);
+        for (int i = 0; i < game.returnEmptySpots(position).size(); i++) {
+            setDotVisible((int) game.returnEmptySpots(position).get(i), true, true);
+        }
     }
 
     private void removeTheStone(int position) {
