@@ -287,15 +287,13 @@ public class Game {
     }
 
     public void moveBluePiece(int bluePosition, int emptyPosition) {
-        gameBord[positionToij(emptyPosition).i][positionToij(emptyPosition).j] = 1;
+        gameBord[positionToij(emptyPosition).i][positionToij(emptyPosition).j] = BLUE;
         gameBord[positionToij(bluePosition).i][positionToij(bluePosition).j] = EMPTY;
-        changeTheTurns();
     }
 
     public void moveRedPiece(int redPosition, int emptyPosition) {
-        gameBord[positionToij(emptyPosition).i][positionToij(emptyPosition).j] = 1;
+        gameBord[positionToij(emptyPosition).i][positionToij(emptyPosition).j] = RED;
         gameBord[positionToij(redPosition).i][positionToij(redPosition).j] = EMPTY;
-        changeTheTurns();
     }
 
     //todo

@@ -443,11 +443,11 @@ public class Board extends javax.swing.JFrame {
     }
 
     private void emptyClickedAction(int position) {
-        if (isWaitForAdd) {
-            addState(position);
-        } else if (isWaitForMove) {
+        if ( isWaitForMove) {
             //take the move second position
             moveState(position);
+        } else if (isWaitForAdd) {
+            addState(position);
         } else {
             System.err.println("error in 'empty' state part: ");
             System.err.println("    >>>isWaitForAdd: " + isWaitForAdd);
@@ -476,7 +476,7 @@ public class Board extends javax.swing.JFrame {
     }
 
     private void moveState(int position) {
-        if (movePosition == -1) {
+        if (!game.isGameBordEmpty(position)) {
             takeMovePosition(position);
         } else {
             moveTheStone(position);
@@ -503,8 +503,9 @@ public class Board extends javax.swing.JFrame {
      */
     private void goToRemoveState() {
         //save the state
-        if (isWaitForMove) isWaitForMoveSave = true;
-        if (isWaitForAdd) isWaitForAddSave = true;
+        isWaitForMoveSave = isWaitForMove;
+        isWaitForAddSave = isWaitForAdd;
+        System.out.println("save state: move is " + isWaitForMove + "add is " + isWaitForAdd);
         isWaitForAdd = false;
         isWaitForMove = false;
         isWaitForRemove = true;
@@ -550,6 +551,7 @@ public class Board extends javax.swing.JFrame {
     }
 
     private void takeMovePosition(int position) {
+        if (movePosition != -1)resetTheMoveState();
         if (game.isBlueTurn() && game.isGameBordBlue(position)) {
             movePosition = position;
         } else if (!game.isBlueTurn() && game.isGameBordRed(position)) {
@@ -570,11 +572,25 @@ public class Board extends javax.swing.JFrame {
             setStoneVisible(movePosition, true, false);
             setStoneVisible(position, true, true);
 
+            if (game.isBlueWinInNextMove(position)) {
+                goToRemoveState();
+                System.out.println("blue Win: remove state");
+            }else{
+                game.changeTheTurns();
+            }
+
         } else if (!game.isBlueTurn() && game.isGameBordEmpty(position) && isConnected(movePosition, position)) {
 
             game.moveRedPiece(movePosition, position);
             setStoneVisible(movePosition, false, false);
             setStoneVisible(position, false, true);
+
+            if (game.isRedWinInNextMove(position)) {
+                goToRemoveState();
+                System.out.println("red Win: remove state");
+            }else{
+                game.changeTheTurns();
+            }
 
         } else {
             System.err.println(">>> move second position");
@@ -583,6 +599,8 @@ public class Board extends javax.swing.JFrame {
         }
         System.out.println("move the stone from " + movePosition + " to " + position);
         resetTheMoveState();
+
+
     }
 
     public boolean isConnected(int firstPosition, int secondPosition){
