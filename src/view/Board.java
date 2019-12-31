@@ -33,7 +33,6 @@ public class Board extends javax.swing.JFrame {
         play = new MoveSound();
         initComponents();
         cleanDots();
-        highlighter34.setVisible(true);
         RedText.setVisible(false);
         BlueText.setText("Blue Can Add Stone");
     }
@@ -543,7 +542,7 @@ public class Board extends javax.swing.JFrame {
 
     private void checkNextState() {
         // check if add state is finished and we enter the move state?
-        if (!game.isRedCanAdd()) {
+        if (!game.isRedCanAdd() && !game.isBlueCanAdd()) {
             isWaitForAdd = false;
             isWaitForMove = true;
             System.out.println("Move state now active");
