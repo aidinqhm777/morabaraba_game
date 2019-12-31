@@ -219,6 +219,14 @@ public class Game {
         return blueStonePackCount == 0;
     }
 
+    public boolean isBlueCanAdd() {
+        return blueStonePackCount > 0;
+    }
+
+    public boolean isRedCanAdd() {
+        return redStonePackCount > 0;
+    }
+
     public boolean isRedCanMove() {
         return redStonePackCount == 0;
     }
@@ -255,7 +263,6 @@ public class Game {
         int i = positionToij(position).i;
         int j = positionToij(position).j;
         gameBord[i][j] = EMPTY;
-        System.out.println(i + " " + j + "cleaned ");
     }
 
     public void removeRedPiece(int position) {
@@ -266,6 +273,16 @@ public class Game {
     public void removeBluePiece(int position) {
         removePiece(position);
         blueStoneCount--;
+    }
+
+    public void removeRedPack(){
+        redStoneCount--;
+        redStonePackCount--;
+    }
+
+    public void removeBluePack(){
+        blueStoneCount--;
+        blueStonePackCount--;
     }
 
     public void moveBluePiece(int bluePosition, int emptyPosition) {

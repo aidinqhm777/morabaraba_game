@@ -379,39 +379,39 @@ public class Board extends javax.swing.JFrame {
         BlueText.setText("Draw");
     }
 
-    private void _mouseClicked(int position) {
-
-        if (blueCanRemove) {
-            blueRemoveRedStone(position);
-        } else if (redCanRemove) {
-            redRemoveBlueStone(position);
-        } else if (game.isGameBordEmpty(position)) {
-            addStone(position);
-            if (game.isDraw()) {
-                DrawText();
-            }
-        } else if (!game.isGameBordEmpty(position)) {
-            waitForMove(position);
-        }
-        if (game.isBlueWin()) {
-            System.out.println("Blue wins");
-            ShowText("Blue wins", true);
-            return;
-        }
-        if (game.isRedWin()) {
-            System.out.println("Red wins");
-            ShowText("Red wins", false);
-        }
-
-    }
-
-    private void mouseClicked_old(int position) {
-        if (isFinished()) return;
-
-        if (isWaitForMove) {
-            move(position);
-        } else _mouseClicked(position);
-    }
+//    private void _mouseClicked(int position) {
+//
+//        if (blueCanRemove) {
+//            blueRemoveRedStone(position);
+//        } else if (redCanRemove) {
+//            redRemoveBlueStone(position);
+//        } else if (game.isGameBordEmpty(position)) {
+//            addStone(position);
+//            if (game.isDraw()) {
+//                DrawText();
+//            }
+//        } else if (!game.isGameBordEmpty(position)) {
+//            waitForMove(position);
+//        }
+//        if (game.isBlueWin()) {
+//            System.out.println("Blue wins");
+//            ShowText("Blue wins", true);
+//            return;
+//        }
+//        if (game.isRedWin()) {
+//            System.out.println("Red wins");
+//            ShowText("Red wins", false);
+//        }
+//
+//    }
+//
+//    private void mouseClicked_old(int position) {
+//        if (isFinished()) return;
+//
+//        if (isWaitForMove) {
+//            move(position);
+//        } else _mouseClicked(position);
+//    }
 
     private boolean isFinished() {
         if (game.isBlueWin()) {
@@ -432,10 +432,7 @@ public class Board extends javax.swing.JFrame {
 
 
     // ----------------------------------- this part of is going to rewrite ----------------------------------------- //
-    //todo
-    //todo
-    //todo
-    //todo
+
 
     private void mouseClicked(int position) {
         if (game.isGameBordEmpty(position)) {
@@ -452,7 +449,10 @@ public class Board extends javax.swing.JFrame {
             //take the move second position
             moveState(position);
         } else {
-            System.err.println("error in 'empty' state part");
+            System.err.println("error in 'empty' state part: ");
+            System.err.println("    >>>isWaitForAdd: " + isWaitForAdd);
+            System.err.println("    >>>isWaitForMove: " + isWaitForMove);
+            System.err.println("    >>>isWaitForRemove: " + isWaitForRemove);
         }
     }
 
@@ -464,6 +464,9 @@ public class Board extends javax.swing.JFrame {
             moveState(position);
         } else {
             System.err.println("error in 'non empty' state part");
+            System.err.println("    >>>isWaitForAdd: " + isWaitForAdd);
+            System.err.println("    >>>isWaitForMove: " + isWaitForMove);
+            System.err.println("    >>>isWaitForRemove: " + isWaitForRemove);
         }
     }
 
@@ -483,21 +486,55 @@ public class Board extends javax.swing.JFrame {
 
     private void removeState(int position) {
         removeTheStone(position);
-        if (isProcessWasSuccessful)resetTheState();
+        if (isProcessWasSuccessful) resetTheRemoveState();
     }
 
-    private void resetTheState(){
+    /**
+     * reset the last state of game after successfully remove a stone
+     */
+    private void resetTheRemoveState() {
         isWaitForMove = isWaitForMoveSave;
         isWaitForAdd = isWaitForAddSave;
+        isWaitForRemove = false;
+        game.changeTheTurns();
     }
 
-    private void saveTheState(){
-        if (isWaitForMove) isWaitForMoveSave = isWaitForMove;
-        if (isWaitForAdd) isWaitForAddSave = isWaitForAdd;
+    /**
+     * save the current state of the game and move to remove state
+     */
+    private void goToRemoveState() {
+        //save the state
+        if (isWaitForMove) isWaitForMoveSave = true;
+        if (isWaitForAdd) isWaitForAddSave = true;
         isWaitForAdd = false;
         isWaitForMove = false;
+        isWaitForRemove = true;
+        isProcessWasSuccessful = false;
+
+        //check the cleaning situation
+        if (isDeletiableFromPack()) deleteFromPack();
     }
 
+    private boolean isDeletiableFromPack(){
+        if (game.isBlueTurn()){
+            if (game.isRedCanAdd()) return true;
+        }else{
+            if (game.isBlueCanAdd()) return true;
+        }
+        return false;
+    }
+
+    private void deleteFromPack(){
+        if (game.isBlueTurn()){
+            game.removeRedPack();
+            redStonePackClean();
+            resetTheRemoveState();
+        }else{
+            game.removeBluePack();
+            blueStonePackClean();
+            resetTheRemoveState();
+        }
+    }
 
     private void resetTheMoveState() {
         movePosition = -1;
@@ -506,6 +543,11 @@ public class Board extends javax.swing.JFrame {
 
     private void checkNextState() {
         // check if add state is finished and we enter the move state?
+        if (!game.isRedCanAdd()) {
+            isWaitForAdd = false;
+            isWaitForMove = true;
+            System.out.println("Move state now active");
+        }
     }
 
     private void takeMovePosition(int position) {
@@ -522,8 +564,6 @@ public class Board extends javax.swing.JFrame {
         } else {
             redRemoveBlueStone(position);
         }
-        game.changeTheTurns();
-        isWaitForRemove = false;
     }
 
     private void addStone(int position) {
@@ -541,8 +581,8 @@ public class Board extends javax.swing.JFrame {
         playMusic();
 
         if (game.isRedWinInNextMove(position)) {
-            isWaitForRemove = true;
-            saveTheState();
+            goToRemoveState();
+            System.out.println("red Win: remove state");
         } else {
             game.changeTheTurns();
         }
@@ -555,8 +595,8 @@ public class Board extends javax.swing.JFrame {
         playMusic();
 
         if (game.isBlueWinInNextMove(position)) {
-            isWaitForRemove = true;
-            saveTheState();
+            System.out.println("blue win: remove state");
+            goToRemoveState();
         } else {
             game.changeTheTurns();
         }
@@ -567,6 +607,8 @@ public class Board extends javax.swing.JFrame {
             game.removeBluePiece(position);
             setStoneVisible(position, true, false);
             isProcessWasSuccessful = true;
+
+            System.out.println("blue stone removed");
         } else {
             System.err.println("click on blue stone!");
         }
@@ -577,8 +619,10 @@ public class Board extends javax.swing.JFrame {
             game.removeRedPiece(position);
             setStoneVisible(position, false, false);
             isProcessWasSuccessful = true;
+
+            System.out.println("red stone removed");
         } else {
-            System.out.println("click on red stone");
+            System.err.println("click on red stone");
         }
 
     }
