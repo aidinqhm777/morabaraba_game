@@ -3,14 +3,10 @@ package view;
 import control.Game;
 import control.MoveSound;
 
-import java.util.LinkedList;
-
 
 public class Board extends javax.swing.JFrame {
 
-    private boolean isMoveWaitColorBlue;
     private boolean blueCanRemove = false;
-    private boolean redCanRemove = false;
     private boolean aiActive = false;
     private static final int BLUE = 1;
     private static final int RED = 0;
@@ -33,10 +29,7 @@ public class Board extends javax.swing.JFrame {
         play = new MoveSound();
         initComponents();
         cleanDots();
-        RedText.setVisible(false);
-        BlueText.setText("Blue Can Add Stone");
     }
-
 
     private void ai_Action() {
 
@@ -67,13 +60,13 @@ public class Board extends javax.swing.JFrame {
 
     private void ShowText(String txt, boolean isBlue) {
         if (isBlue) {
-            RedText.setVisible(false);
-            BlueText.setVisible(true);
-            BlueText.setText(txt);
+            redText.setVisible(false);
+            blueText.setVisible(true);
+            blueText.setText(txt);
         } else {
-            BlueText.setVisible(false);
-            RedText.setVisible(true);
-            RedText.setText(txt);
+            blueText.setVisible(false);
+            redText.setVisible(true);
+            redText.setText(txt);
         }
     }
 
@@ -89,7 +82,6 @@ public class Board extends javax.swing.JFrame {
         play = new MoveSound();
         play.start();
     }
-
 
     /**
      * clean a stone from stone pack
@@ -257,193 +249,31 @@ public class Board extends javax.swing.JFrame {
         returnDot(position, isWhite).setVisible(flag);
     }
 
-    private void move(int position) {
-        LinkedList<Integer> connectedSpot = game.returnConnectedSpot(position);
-        boolean moved = false;
-        for (int i = 0; i < connectedSpot.size(); i++) {
-            if (isMoveWaitColorBlue && game.isBlueTurn()) {
-                if (movePosition == connectedSpot.get(i) && game.isGameBordEmpty(position)) {
-                    game.moveBluePiece(connectedSpot.get(i), position);
-                    setStoneVisible(connectedSpot.get(i), true, false);
-                    setStoneVisible(position, true, true);
-                    playMusic();
-                    cleanDots();
-                    if (game.isBlueWinInNextMove(position)) {
-                        ShowText("blue can take a red stone", true);
-                        blueCanRemove = true;
-                        ai_Action();
-                    } else {
-                        ShowText("Wait for Red to move", false);
-                    }
-                    moved = true;
-                    break;
-                }
-            } else if (!isMoveWaitColorBlue && !game.isBlueTurn()) {
-                if (movePosition == connectedSpot.get(i) && game.isGameBordEmpty(position)) {
-                    game.moveRedPiece(connectedSpot.get(i), position);
-                    setStoneVisible(connectedSpot.get(i), false, false);
-                    setStoneVisible(position, false, true);
-                    playMusic();
-                    cleanDots();
-                    System.out.println(position);
-                    if (game.isRedWinInNextMove(position)) {
-                        ShowText("Red can take a blue stone", false);
-                        redCanRemove = true;
-                    } else {
-                        ShowText("wait for blue to move", true);
-                    }
-
-                    ai_Action();
-                    moved = true;
-                    break;
-                }
-            }
-
-        }
-        if (!moved) System.out.println("Wrong entry");
-        isWaitForMove = false;
-    }
-
-    private void waitForMove(int position) {
-        if (game.isBlueCanMove() && isStoneVisible(position, true) && game.isBlueTurn()) {
-            cleanDots();
-            setDotVisible(position, false, true);
-            for (int i = 0; i < game.returnEmptySpots(position).size(); i++) {
-                setDotVisible((int) game.returnEmptySpots(position).get(i), true, true);
-            }
-
-            isWaitForMove = true;
-            movePosition = position;
-            isMoveWaitColorBlue = true;
-        } else if (game.isRedCanMove() && isStoneVisible(position, false) && !game.isBlueTurn()) {
-
-            cleanDots();
-            setDotVisible(position, false, true);
-            for (int i = 0; i < game.returnEmptySpots(position).size(); i++) {
-                setDotVisible((int) game.returnEmptySpots(position).get(i), true, true);
-            }
-
-            isWaitForMove = true;
-            movePosition = position;
-            isMoveWaitColorBlue = false;
-//            ShowText("wait for red for move", false);
-//            System.out.println("wait for red for move " + movePosition);
-        }
-    }
-
-    private void addStone_old(int position) {
-        if (game.isBlueTurn() && !game.isBlueCanMove() && game.canAddStone(BLUE)) {
-
-            game.addBluePiece(position);
-            setStoneVisible(position, true, true);
-            blueStonePackClean();
-            playMusic();
-
-            if (game.isBlueWinInNextMove(position)) {
-                blueCanRemove = true;
-                ShowText("blue can take a red stone", true);
-                ai_Action();
-            } else {
-                if (game.isBlueCanMove()) {
-                    ShowText("Red can move", false);
-                } else {
-                    ShowText("Red Can Add Stone", false);
-                }
-            }
-
-        } else if (!game.isBlueTurn() && !game.isRedCanMove() && game.canAddStone(RED)) {
-
-            game.addRedPiece(position);
-            setStoneVisible(position, false, true);
-            redStonePackClean();
-            if (game.isRedWinInNextMove(position)) {
-                redCanRemove = true;
-                ShowText("red can take a blue stone", false);
-            } else {
-                if (game.isRedCanMove()) {
-                    ShowText("blue can move", true);
-                } else {
-                    ShowText("Blue Can Add Stone", true);
-                }
-            }
-            playMusic();
-            ai_Action();
-        }
-    }
-
 
     private void DrawText() {
-        RedText.setVisible(true);
-        BlueText.setVisible(true);
-        RedText.setText("Draw");
-        BlueText.setText("Draw");
-    }
-
-//    private void _mouseClicked(int position) {
-//
-//        if (blueCanRemove) {
-//            blueRemoveRedStone(position);
-//        } else if (redCanRemove) {
-//            redRemoveBlueStone(position);
-//        } else if (game.isGameBordEmpty(position)) {
-//            addStone(position);
-//            if (game.isDraw()) {
-//                DrawText();
-//            }
-//        } else if (!game.isGameBordEmpty(position)) {
-//            waitForMove(position);
-//        }
-//        if (game.isBlueWin()) {
-//            System.out.println("Blue wins");
-//            ShowText("Blue wins", true);
-//            return;
-//        }
-//        if (game.isRedWin()) {
-//            System.out.println("Red wins");
-//            ShowText("Red wins", false);
-//        }
-//
-//    }
-//
-//    private void mouseClicked_old(int position) {
-//        if (isFinished()) return;
-//
-//        if (isWaitForMove) {
-//            move(position);
-//        } else _mouseClicked(position);
-//    }
-
-    private boolean isFinished() {
-        if (game.isBlueWin()) {
-            System.out.println("Blue wins");
-            ShowText("Blue wins", true);
-            return true;
-        }
-        if (game.isRedWin()) {
-            System.out.println("Red wins");
-            ShowText("Red wins", false);
-            return true;
-        }
-        if (game.isDraw()) {
-            DrawText();
-            return true;
-        } else return false;
+        redText.setVisible(true);
+        blueText.setVisible(true);
+        redText.setText("Draw");
+        blueText.setText("Draw");
     }
 
 
     // ----------------------------------- this part of is going to rewrite ----------------------------------------- //
-
+    //todo computer player
 
     private void mouseClicked(int position) {
+
         if (game.isGameBordEmpty(position)) {
             emptyClickedAction(position);
         } else {
             nonEmptyClickedAction(position);
         }
+        if (isFinished()) finishTheGame();
+
     }
 
     private void emptyClickedAction(int position) {
-        if ( isWaitForMove) {
+        if (isWaitForMove) {
             //take the move second position
             moveState(position);
         } else if (isWaitForAdd) {
@@ -463,10 +293,10 @@ public class Board extends javax.swing.JFrame {
             //take the move first position
             moveState(position);
         } else {
-            System.err.println("error in 'non empty' state part");
-            System.err.println("    >>>isWaitForAdd: " + isWaitForAdd);
-            System.err.println("    >>>isWaitForMove: " + isWaitForMove);
-            System.err.println("    >>>isWaitForRemove: " + isWaitForRemove);
+            System.err.println(">>>error in 'non empty' state part");
+            System.err.println("    ..isWaitForAdd: " + isWaitForAdd);
+            System.err.println("    ..isWaitForMove: " + isWaitForMove);
+            System.err.println("    ..isWaitForRemove: " + isWaitForRemove);
         }
     }
 
@@ -505,23 +335,23 @@ public class Board extends javax.swing.JFrame {
         //save the state
         isWaitForMoveSave = isWaitForMove;
         isWaitForAddSave = isWaitForAdd;
-        System.out.println("save state: move is " + isWaitForMove + "add is " + isWaitForAdd);
+        System.out.println(">>save state:\n \t..move is " + (isWaitForMove ? "active" : "not active") + " \n\t..add is "
+                + (isWaitForAdd ? "active" : "not active"));
         isWaitForAdd = false;
         isWaitForMove = false;
         isWaitForRemove = true;
         isProcessWasSuccessful = false;
 
         //check the cleaning situation
-        if (isDeletiableFromPack()) deleteFromPack();
+        if (isDeletableFromPack()) deleteFromPack();
     }
 
-    private boolean isDeletiableFromPack() {
+    private boolean isDeletableFromPack() {
         if (game.isBlueTurn()) {
-            if (game.isRedCanAdd()) return true;
+            return game.isRedCanAdd();
         } else {
-            if (game.isBlueCanAdd()) return true;
+            return game.isBlueCanAdd();
         }
-        return false;
     }
 
     private void deleteFromPack() {
@@ -551,7 +381,7 @@ public class Board extends javax.swing.JFrame {
     }
 
     private void takeMovePosition(int position) {
-        if (movePosition != -1)resetTheMoveState();
+        if (movePosition != -1) resetTheMoveState();
         if (game.isBlueTurn() && game.isGameBordBlue(position)) {
             movePosition = position;
         } else if (!game.isBlueTurn() && game.isGameBordRed(position)) {
@@ -566,7 +396,7 @@ public class Board extends javax.swing.JFrame {
     }
 
     private void moveTheStone(int position) {
-        if (game.isBlueTurn() && game.isGameBordEmpty(position) && isConnected(movePosition, position)){
+        if (game.isBlueTurn() && game.isGameBordEmpty(position) && isConnected(movePosition, position)) {
 
             game.moveBluePiece(movePosition, position);
             setStoneVisible(movePosition, true, false);
@@ -575,7 +405,7 @@ public class Board extends javax.swing.JFrame {
             if (game.isBlueWinInNextMove(position)) {
                 goToRemoveState();
                 System.out.println("blue Win: remove state");
-            }else{
+            } else {
                 game.changeTheTurns();
             }
 
@@ -588,7 +418,7 @@ public class Board extends javax.swing.JFrame {
             if (game.isRedWinInNextMove(position)) {
                 goToRemoveState();
                 System.out.println("red Win: remove state");
-            }else{
+            } else {
                 game.changeTheTurns();
             }
 
@@ -603,14 +433,12 @@ public class Board extends javax.swing.JFrame {
 
     }
 
-    public boolean isConnected(int firstPosition, int secondPosition){
-        int searchResult = game.returnConnectedSpot(firstPosition).indexOf(secondPosition);
-        if (searchResult != -1){
-            return true;
-        }else return false;
+    private boolean isConnected(int firstPosition, int secondPosition) {
+        int searchResult = game.getConnectedSpot(firstPosition).indexOf(secondPosition);
+        return searchResult != -1;
     }
 
-    private void moveVisualDots(int position){
+    private void moveVisualDots(int position) {
         setDotVisible(position, false, true);
         for (int i = 0; i < game.returnEmptySpots(position).size(); i++) {
             setDotVisible((int) game.returnEmptySpots(position).get(i), true, true);
@@ -686,14 +514,35 @@ public class Board extends javax.swing.JFrame {
 
     }
 
+    private boolean isFinished() {
+        if (game.isBlueWin() || (!game.canRedMove() && !game.isRedCanAdd())) return true;
+        else if (game.isRedWin() || (!game.canBlueMove() && !game.isBlueCanAdd())) return true;
+        else return game.isDraw();
+    }
+
+    private void finishTheGame() {
+        if (game.isBlueWin() || (!game.canRedMove() && !game.isRedCanAdd())) {
+            System.out.println("Blue wins");
+            ShowText("Blue wins", true);
+        }
+        if (game.isRedWin() || (!game.canBlueMove() && !game.isBlueCanAdd())) {
+            System.out.println("Red wins");
+            ShowText("Red wins", false);
+        }
+        if (game.isDraw()) {
+            DrawText();
+        }
+    }
+
+
     // ----------------------------------------------- end of part  ------------------------------------------------- //
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        BlueText = new javax.swing.JLabel();
-        RedText = new javax.swing.JLabel();
+        blueText = new javax.swing.JLabel();
+        redText = new javax.swing.JLabel();
         position1 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
         position2 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
         position3 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50), new java.awt.Dimension(50, 50));
@@ -846,19 +695,19 @@ public class Board extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(null);
 
-        BlueText.setFont(new java.awt.Font("Tahoma", 1, 30)); // NOI18N
-        BlueText.setForeground(new java.awt.Color(0, 0, 252));
-        BlueText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        BlueText.setText("Blue Can move");
-        getContentPane().add(BlueText);
-        BlueText.setBounds(30, 880, 450, 30);
+        blueText.setFont(new java.awt.Font("Tahoma", 1, 30)); // NOI18N
+        blueText.setForeground(new java.awt.Color(0, 0, 252));
+        blueText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        blueText.setText("Blue Can move");
+        getContentPane().add(blueText);
+        blueText.setBounds(30, 880, 450, 30);
 
-        RedText.setFont(new java.awt.Font("Tahoma", 1, 30)); // NOI18N
-        RedText.setForeground(new java.awt.Color(255, 0, 51));
-        RedText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        RedText.setText("Red Can move");
-        getContentPane().add(RedText);
-        RedText.setBounds(930, 880, 450, 30);
+        redText.setFont(new java.awt.Font("Tahoma", 1, 30)); // NOI18N
+        redText.setForeground(new java.awt.Color(255, 0, 51));
+        redText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        redText.setText("Red Can move");
+        getContentPane().add(redText);
+        redText.setBounds(930, 880, 450, 30);
 
         position1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         position1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1828,8 +1677,8 @@ public class Board extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel BlueText;
-    private javax.swing.JLabel RedText;
+    private javax.swing.JLabel blueText;
+    private javax.swing.JLabel redText;
     private javax.swing.JLabel blueStone1;
     private javax.swing.JLabel blueStone10;
     private javax.swing.JLabel blueStone11;

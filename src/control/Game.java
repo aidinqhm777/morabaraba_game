@@ -3,17 +3,15 @@ package control;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-//todo have to end in imposable to move
-//todo ai is not complete
 
 public class Game {
 
-    //blue is 1, red is 0, and empty is -1;
     private static final int BLUE = 1;
     private static final int RED = 0;
     private static final int EMPTY = -1;
     private int[][] gameBord = new int[8][3];
     private Game parent;
+    private int NumberOfSpotsInBoard = 24;
     private ArrayList<Game> next = new ArrayList<>();
     private boolean blueTurn;
     private int blueStonePackCount;
@@ -61,12 +59,36 @@ public class Game {
     //methods
 
     /**
+     * @return if its possible for blue to move one of its pieces?
+     */
+    public boolean canRedMove() {
+        return canMove(RED);
+    }
+
+    public boolean canBlueMove() {
+        return canMove(BLUE);
+    }
+
+    private boolean canMove(int color) {
+        for (int position = 1; position <= NumberOfSpotsInBoard; position++) {
+            if (getGameBoardColor(position) == color) {
+                LinkedList<Integer> connectedSpot = getConnectedSpot(position);
+                for (int connectedPosition : connectedSpot) {
+                    if (isGameBordEmpty(connectedPosition)) return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+    /**
      * @param position position in a game Board
      * @return return the empty spots that connected to the position
      */
     public LinkedList<Integer> returnEmptySpots(int position) {
         LinkedList<Integer> emptyConnectedSpots = new LinkedList<>();
-        LinkedList<Integer> connected = returnConnectedSpot(position);
+        LinkedList<Integer> connected = getConnectedSpot(position);
 
         for (Integer integer : connected) {
             if (isGameBordEmpty(integer)) {
@@ -81,7 +103,7 @@ public class Game {
      * @param position position in a game Board
      * @return return the connected spots to position
      */
-    public LinkedList<Integer> returnConnectedSpot(int position) {
+    public LinkedList<Integer> getConnectedSpot(int position) {
         LinkedList<Integer> empty = new LinkedList<>();
 
 
@@ -162,7 +184,7 @@ public class Game {
 
     /**
      * @return next position of add stone or Remove it
-     */  //todo
+     */
     public int nextPositionAddRemove() {
 
         if (nextState == "add") {
@@ -177,14 +199,14 @@ public class Game {
 
     /**
      * @return next position of move stone
-     */  //todo
+     */
     public int[] nextPositionMove() {
         return new int[]{1, 2};
     }
 
     /**
      * @return the state
-     */ // todo
+     */
     public String nextState(boolean blueCanRemove) {
         //return
 
@@ -205,19 +227,13 @@ public class Game {
     }
 
     public boolean isBlueWin() {
-        //todo there is other rules
         return redStoneCount <= 2;
     }
 
     public boolean isRedWin() {
-        //todo there is other rules
         return blueStoneCount <= 2;
     }
 
-    public boolean isBlueCanMove() {
-        //todo there is other rules
-        return blueStonePackCount == 0;
-    }
 
     public boolean isBlueCanAdd() {
         return blueStonePackCount > 0;
@@ -227,9 +243,6 @@ public class Game {
         return redStonePackCount > 0;
     }
 
-    public boolean isRedCanMove() {
-        return redStonePackCount == 0;
-    }
 
     public boolean canAddStone(int state) {
         if (blueStonePackCount == 0 && state == BLUE) return false;
@@ -248,9 +261,9 @@ public class Game {
         blueStonePackCount--;
     }
 
-    public void changeTheTurns(){
+    public void changeTheTurns() {
         blueTurn = !blueTurn;
-        System.out.println("its " + (blueTurn? "blue" : "red") + " turn");
+        System.out.println("its " + (blueTurn ? "blue" : "red") + " turn");
     }
 
     public void addRedPiece(int position) {
@@ -276,12 +289,12 @@ public class Game {
         blueStoneCount--;
     }
 
-    public void removeRedPack(){
+    public void removeRedPack() {
         redStoneCount--;
         redStonePackCount--;
     }
 
-    public void removeBluePack(){
+    public void removeBluePack() {
         blueStoneCount--;
         blueStonePackCount--;
     }
@@ -296,7 +309,6 @@ public class Game {
         gameBord[positionToij(redPosition).i][positionToij(redPosition).j] = EMPTY;
     }
 
-    //todo
     public static void findNextMode(Game game) {
         Game temp = new Game(game.gameBord, game);
         if (game.blueTurn) {
@@ -508,6 +520,12 @@ public class Game {
         int i = positionToij(position).i;
         int j = positionToij(position).j;
         return gameBord[i][j] == BLUE;
+    }
+
+    public int getGameBoardColor(int position) {
+        int i = positionToij(position).i;
+        int j = positionToij(position).j;
+        return gameBord[i][j];
     }
 
     public boolean isGameBordRed(int position) {
